@@ -1,2 +1,2 @@
-# IIITH-proj
+# IIITH-PROJ
 Covid Tracing Project 
