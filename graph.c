@@ -5,8 +5,11 @@
 
 #include "graph.h"
 
+List* global;
+int row,column;
+
 // create a new vertex with a specific label
-Vertex* new_vertex(const char* label) {
+Vertex* new_vertex(const char* label,int id) {
 	assert(label);
 
 	Vertex* vertex = malloc(sizeof (*vertex));
@@ -16,6 +19,7 @@ Vertex* new_vertex(const char* label) {
 	vertex->label = malloc((1 + strlen(label)) * sizeof (char));
 	assert(vertex->label);
 	strcpy(vertex->label, label);
+    vertex->id = id;
 
 	vertex->first_edge = NULL;
 
@@ -37,11 +41,13 @@ Edge* new_edge(int u, int v, int w) {
 // destroy a vertex, including its label and all of its edges
 void free_vertex(Vertex* vertex) {
 	if (vertex) {
+        //free the edges
 		while (vertex->first_edge) {
 			Edge* edge = vertex->first_edge;
 			vertex->first_edge = vertex->first_edge->next_edge;
 			free(edge);
 		}
+        //free the values in the vertex
 		free(vertex->label);
 		free(vertex);	
 	}
@@ -76,10 +82,10 @@ void free_graph(Graph* graph) {
 // add a new vertex with label 'name' to a graph
 void graph_add_vertex(Graph* graph, const char* name) {
 	if (graph->n < graph->maxn) {
-		graph->vertices[graph->n] = new_vertex(name);	
+		graph->vertices[graph->n] = new_vertex(name,graph->n);
 		graph->n++;
 	} else {
-		fprintf(stderr, "hey! adding new vertex to full graph\n");
+		printf("adding new vertex to full graph\n");
 	}
 }
 // add an undirected edge between u and v with weight w to graph
@@ -95,22 +101,170 @@ void graph_add_d_edge(Graph* graph, int u, int v, int w) {
 		edge->next_edge = graph->vertices[u]->first_edge;
 		graph->vertices[u]->first_edge = edge;
 	} else {
-		printf("hey! adding edge between non-existant vertices\n");
+		printf("adding edge between non-existant vertices,check pls\n");
 	}
     
 }
 
-//TRAVERSE
-void false_array(Graph* graph, bool array[]) {//used to set all values to false
+
+/**************************************************/
+/**************************************************/
+//                   TRAVERSE                     //
+/**************************************************/
+/**************************************************/
+
+//used to set all values to false
+void false_array(Graph* graph, bool array[]) {
     int i;
     for (i=0; i < graph->n; i++)
         array[i] = false;
 }
-void stack_print(List* stack, Graph* graph, int total_distance);
-void dfs_path(Graph* graph, int destination_id, int id, bool is_source, List* stack, bool visited[]);
-void short_path_search(Graph* graph, int destination_id, int id, bool is_source, List* distances, List* curr_distance, List* stack, bool visited[],int shortest_loc, int *count);
-int distance_sum(List* curr_distance);
-// Calculates the total distance by adding all distances in curr_distance list
+//returns array with all paths and required values
+int** all_paths(Graph* graph, int source_id, int destination_id) {
+    
+    // Create zeroed visited array
+    bool visited[graph->n];
+    false_array(graph, visited);
+    //global variable now has a stack to accept values
+    global=new_stack();
+    // Create a stack
+    List* stack=new_stack();
+    List* curr_dist=new_stack();
+    List* distances=new_queue();
+    value_get(graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
+
+    int m = queue_size(distances);
+    int n = ((graph->maxn)+3);
+    row = m;
+    column = n;
+    int **arr;
+    arr = malloc(sizeof(int*) *m);
+    for(int i = 0;i<m;i++){
+        arr[i] = malloc(sizeof(int*) *n);
+    }
+    for(int i = 0;i<m;i++){
+        for(int j =0;j<n;j++){
+            arr[i][j] = -1;
+        }
+    }
+    value_store(graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
+
+    //NOTE: GLOBAL STACK HAS FORMAT: (-2,dist,path)*m (m->paths)
+    
+    //assert((stack_pop(global))==-2);
+    //To ensure that top of stack has element -2
+    int x =0,p=0,q=1;
+    List* tempstack=new_stack();
+    while (!stack_is_empty(global))
+        stack_push(tempstack, stack_pop(global));
+    while(stack_size(tempstack)>0){
+        if(x==-2){
+            p++;
+            q=1;
+        }
+        x = stack_pop(tempstack);
+        arr[p][q]=x;
+        q++;
+    }
+    free_stack(tempstack);
+    free_stack(global);
+    free_stack(stack);
+    free_stack(curr_dist);
+    free_queue(distances);
+    return arr;
+}
+
+// Finds a simple path from id to destination_id using depth first search
+void value_get(Graph* graph, int destination_id, int id, bool is_source,
+              List* stack,List* curr_dist,List* distances,bool visited[]) {
+    
+    int total_dist=0;
+    Edge *curredge=graph->vertices[id]->first_edge;
+    
+    if (is_source) {
+        stack_push(stack, id);
+        visited[id] = true;
+    }
+    
+    // Iterate until the stack is empty
+    while (!stack_is_empty(stack)) {
+        id = curredge->v;
+        
+        // Vertex is unvisited
+        if (!visited[id]) {
+            visited[id] = true;
+            stack_push(stack, id);
+            stack_push(curr_dist,curredge->weight);
+
+            // Destination is reached
+            if (destination_id == id) {
+                total_dist=distance_sum(curr_dist);
+                //stack_print(stack, graph, true, total_dist);
+                stack_pop(stack);
+                stack_pop(curr_dist);
+                queue_enqueue(distances, total_dist);
+            }
+            // Destination is not reached
+            else
+                value_get(graph, destination_id, id, false, stack,curr_dist,distances,visited);
+            
+            visited[id] = false;
+        }
+        curredge = curredge->next_edge;
+        if (curredge == NULL) {
+            stack_pop(stack);
+            if (!stack_is_empty(curr_dist))
+                stack_pop(curr_dist);
+            break;
+        }
+    }
+}
+void value_store(Graph* graph, int destination_id, int id, bool is_source,
+              List* stack,List* curr_dist,List* distances,bool visited[]) {
+    
+    int total_dist=0;
+    Edge *curredge=graph->vertices[id]->first_edge;
+    
+    if (is_source) {
+        stack_push(stack, id);
+        visited[id] = true;
+    }
+    
+    // Iterate until the stack is empty
+    while (!stack_is_empty(stack)) {
+        id = curredge->v;
+        
+        // Vertex is unvisited
+        if (!visited[id]) {
+            visited[id] = true;
+            stack_push(stack, id);
+            stack_push(curr_dist,curredge->weight);
+
+            // Destination is reached
+            if (destination_id == id) {
+                total_dist=distance_sum(curr_dist);
+                store(stack,graph,true,total_dist);
+                //stack_print(stack, graph, true, total_dist);
+                stack_pop(stack);
+                stack_pop(curr_dist);
+                queue_enqueue(distances, total_dist);
+            }
+            // Destination is not reached
+            else
+                value_store(graph, destination_id, id, false, stack,curr_dist,distances,visited);
+            
+            visited[id] = false;
+        }
+        curredge = curredge->next_edge;
+        if (curredge == NULL) {
+            stack_pop(stack);
+            if (!stack_is_empty(curr_dist))
+                stack_pop(curr_dist);
+            break;
+        }
+    }
+}
+
 int distance_sum(List* curr_distance) {
     int x, sum=0;
     List* tempstack=new_stack();
@@ -127,163 +281,59 @@ int distance_sum(List* curr_distance) {
     free_stack(tempstack);
 }
 
-/******************************************************************************/
+void store(List* stack, Graph* graph,bool accept,int total_dist){
+    
+    int x;
+    stack_push(global,total_dist);
+    List* tempst=new_stack();
+    while (!stack_is_empty(stack))
+        stack_push(tempst, stack_pop(stack));
+    while(stack_size(tempst)>0){
+        x = stack_pop(tempst);
+        stack_push(global,x);
+        stack_push(stack,x);
+    }
+    stack_push(global,-2);
+    free_stack(tempst);
+}
+
+//no use for now
 
 // Prints the path stored in the stack
-void stack_print(List* stack, Graph* graph, int total_distance) {
-    int x;
-    List* tempstack=new_stack();
-    printf("%d",stack_size(stack));
-    while (!stack_is_empty(stack))
-        stack_push(tempstack, stack_pop(stack));
+// void stack_print(List* stack, Graph* graph, bool print_dist,
+//                  int total_distance) {
+//     int x;
+//     List* tempstack=new_stack();
+//     while (!stack_is_empty(stack))
+//         stack_push(tempstack, stack_pop(stack));
     
-    while (stack_size(tempstack)>1) {
-        x = stack_pop(tempstack);
-        stack_push(stack, x);
-        printf("%s, ", graph->vertices[x]->label);
-    }
+//     while (stack_size(tempstack)>0) {
+//         x = stack_pop(tempstack);
+//         stack_push(stack, x);
+//         printf("%d ", x);
+//     }
+//     free_stack(tempstack);
+// }
+// void stack_print(List* stack, Graph* graph, bool print_dist,
+//                  int total_distance) {
+//     int x;
+//     List* tempstack=new_stack();
+//     while (!stack_is_empty(stack))
+//         stack_push(tempstack, stack_pop(stack));
     
-    x = stack_pop(tempstack);
-    printf("%s (%dkm)\n", graph->vertices[x]->label, total_distance);
+//     while (stack_size(tempstack)>1) {
+//         x = stack_pop(tempstack);
+//         stack_push(stack, x);
+//         printf("%s, ", graph->vertices[x]->label);
+//     }
     
-    stack_push(stack, x);
+//     x = stack_pop(tempstack);
+//     if (print_dist)
+//         printf("%s (%dkm)\n", graph->vertices[x]->label, total_distance);
+//     else
+//         printf("%s\n", graph->vertices[x]->label);
+//     stack_push(stack, x);
     
-    free_stack(tempstack);
-}
-/* PART 3: print all paths */
-void all_paths(Graph* graph, int source_id, int destination_id) {
-    
-    // Create zeroed visited array
-    bool visited[graph->n];
-    false_array(graph, visited);//sets all elements to false
-    
-    // Create a stack
-    List* stack=new_stack(); //make a new stack
-    dfs_path(graph, destination_id, source_id, true, stack, visited);
-    free_stack(stack);
-}
-
-// Finds a simple path from id to destination_id using depth first search
-void dfs_path(Graph* graph, int destination_id, int id, bool is_source, List* stack, bool visited[]) {
-    Edge *curredge=graph->vertices[id]->first_edge; //calling the edge connected to the source_id
-    if (is_source) {//we took true as above
-        stack_push(stack, id);//id = source_id
-        visited[id] = true;
-    }
-    
-    // Iterate until the stack is empty
-    while (!stack_is_empty(stack)) {
-        id = curredge->v;
-        
-        // Vertex is unvisited
-        if (!visited[id]) {
-            visited[id] = true;
-            stack_push(stack, id);
-            
-            // Destination is reached
-            if (destination_id == id) {
-                stack_print(stack, graph, 0);
-                stack_pop(stack);
-            }
-            // Destination is not reached
-            else
-                dfs_path(graph, destination_id, id, false, stack, visited);
-            
-            visited[id] = false;
-        }
-        curredge = curredge->next_edge;
-        if (curredge == NULL) {
-            stack_pop(stack);
-            break;
-        }
-    }
-}
-
-/******************************************************************************/
-/* PART 4: print shortest path */
-
-void shortest_path(Graph* graph, int source_id, int destination_id) {
-	
-    // Create false visited array
-    bool visited[graph->n];
-    false_array(graph, visited);
-    
-    // Create a stack and queue
-    List* stack=new_stack();
-    List* curr_distance=new_stack();
-    List* distances=new_queue();
-    
-    short_path_search(graph, destination_id, source_id, true, distances,
-                      curr_distance, stack, visited, 0, 0);
-    
-    int x, shortest=queue_dequeue(distances), shortest_loc=0, count=1;
-    //printf("%d",queue_size(distances));
-    char arr[queue_size(distances)];
-    if(queue_size(distances)<3){
-
-    }
-    while (!queue_is_empty(distances)) {
-        x = queue_dequeue(distances);
-        if (x < shortest) {
-            shortest = x;
-            shortest_loc = count;
-        }
-        count++;
-    }
-    
-    free_stack(stack);
-    free_stack(curr_distance);
-    free_queue(distances);
-}
-
-// Stores distances of all simple paths in distances list if find_shortest
-// is false. Otherwise, if find_shortest is true, iterates until the shortest
-// path is reached and then prints the path and its distance.
-void short_path_search(Graph* graph, int destination_id, int id, bool is_source, List* distances, List* curr_distance,
-                       List* stack, bool visited[], int shortest_loc, int *count) {
-    int total_distance=0;
-    
-    Edge *curredge=graph->vertices[id]->first_edge;
-    
-    if (is_source) {
-        stack_push(stack, id);
-        visited[id] = true;
-    }
-    
-    // Iterate until the stack is empty
-    while (!stack_is_empty(stack)) {
-        id = curredge->v;
-        
-        // Vertex is unvisited
-        if (!visited[id]) {
-            visited[id] = true;
-            stack_push(stack, id);
-            stack_push(curr_distance, curredge->weight);
-            
-            // Destination is reached
-            if (destination_id == id) {
-                total_distance = distance_sum(curr_distance);
-                stack_print(stack, graph,total_distance);
-                stack_pop(stack);
-                stack_pop(curr_distance);
-                queue_enqueue(distances, total_distance);
-            }
-            // Destination is not reached
-            else
-                short_path_search(graph, destination_id, id, false, distances,
-                                  curr_distance, stack, visited,
-                                  shortest_loc, count);
-            
-            visited[id] = false;
-        }
-        
-        curredge = curredge->next_edge;
-        if (curredge == NULL) {
-            stack_pop(stack);
-            if (!stack_is_empty(curr_distance))
-                stack_pop(curr_distance);
-            break;
-        }
-    }
-}
+//     free_stack(tempstack);
+// }
 

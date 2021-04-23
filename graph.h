@@ -4,22 +4,26 @@
 typedef struct graph Graph;
 typedef struct vertex Vertex;
 typedef struct edge Edge;
-
 #include "extra.c"
 
-struct graph {
+//u can write variable struct names in caps or smalls based on your comfort
+typedef struct graph {
+	//int array_size;//for the path making
 	int n, maxn;
 	Vertex** vertices;
-};
-struct vertex {
+}Graph;
+typedef struct vertex {
 	char* label;
+	int id;
+	int safetyval;
 	Edge* first_edge;
-};
-struct edge {
+}Vertex;
+typedef struct edge {
 	int u, v;
 	int weight;
 	Edge* next_edge;
-};
+}Edge;
+
 // create a new, empty graph, with space for a maximum of n vertices
 Graph* new_graph(int n);
 // destroy a graph, its vertices, and their edges
@@ -33,9 +37,13 @@ void graph_add_d_edge(Graph* graph, int u, int v, int w);
 
 
 //TRAVERSALS
-void print_dfs(Graph* graph, int source_id);
-void print_bfs(Graph* graph, int source_id);
-void detailed_path(Graph* graph, int source_id, int destination_id);
-void all_paths(Graph* graph, int source_id, int destination_id);
-void shortest_path(Graph* graph, int source_id, int destination_id);
+void value_store(Graph* graph, int destination_id, int id, bool is_source,
+              List* stack,List* curr_dist,List* distances,bool visited[]);
+void value_get(Graph* graph, int destination_id, int id, bool is_source,
+              List* stack,List* curr_dist,List* distances,bool visited[]) ;
+void stack_print(List* stack, Graph* graph, bool print_dist,
+                 int total_distance);
+void store(List* stack, Graph* graph,bool accept,int total_dist);
+int distance_sum(List* curr_distance);
+int** all_paths(Graph* graph, int source_id, int destination_id);
 #endif
