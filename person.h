@@ -7,17 +7,12 @@ struct person {
     char destination;
 };
 
-struct element{
-    int data;
-    struct elemenet* next;
-};
 struct tempstats{
     int positive;
     int primary;
     int secondary;
-    struct element positive[100];
-    struct element primary[100];
-    struct element negative[100];
+    int positive_array[100];
+    int primary_array[100];
+    int secondary_array[100];
 
 };
-

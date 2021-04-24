@@ -11,6 +11,9 @@ int inputppl(int K)
 {
     
     char s1[] = "Neutral";
+    char s4[]="Positive";
+    char s2[] = "Primary";
+    char s3[] = "Secondary";
     people[K] = (struct person *)malloc(K * sizeof(struct person));
     stations[K] = (struct tempstats *)malloc(K * sizeof(struct tempstats));
     for (int i = 0; i < K; i++)
@@ -23,23 +26,23 @@ int inputppl(int K)
     {
         int x;
         scanf("%d", &x);
-        char s1[]="Positive";
-        strcpy(people[i]->string, s1);
+        strcpy(people[i]->string, s4);
         stations[people[x]->source_station]->positive++;
+        stations[people[x]->source_station]->positive_array[i]=x;
     }
     for (int i = 0; i < K; i++)
     {
-        if ((stations[people[i]->source_station]->positive) > 0)
+        if ((stations[people[i]->source_station]->positive) > 0 && strcmp(people[i]->string,s4)!=0)
         {
-            char s2[] = "Primary";
             stations[people[i]->source_station]->primary++;
             strcpy(people[i]->string, s2);
+            stations[people[i]->source_station]->primary_array[i]=i;
         }
         if ((stations[people[i]->source_station]->primary) > 0 && (stations[people[i]->source_station]->positive!=0))
         {
-            char s3[] = "Secondary";
             stations[people[i]->source_station]->secondary++;
             strcpy(people[i]->string, s3);
+            stations[people[i]->source_station]->secondary_array[i]=i;
         }
     }
 }
