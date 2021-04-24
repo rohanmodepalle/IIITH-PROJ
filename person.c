@@ -6,7 +6,7 @@
 #include "person.h"
 #define N 100
 struct person people[N];
-struct tempstats *stations[N];
+struct tempstats stations[N];
 int inputppl(int K)
 {
     
@@ -15,7 +15,7 @@ int inputppl(int K)
     char s2[] = "Primary";
     char s3[] = "Secondary";
     //people[N] = (struct person *)malloc(N * sizeof(struct person));
-    stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
+    //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
     for (int i = 0; i < K; i++)
     {
         scanf("%d ", &people[i].source_station);
@@ -27,22 +27,22 @@ int inputppl(int K)
         int x;
         scanf("%d", &x);
         strcpy(people[i].string, s4);
-        stations[people[x].source_station]->positive++;
-        stations[people[x].source_station]->positive_array[i]=x;
+        stations[people[x].source_station].positive++;
+        stations[people[x].source_station].positive_array[i]=x;
     }
     for (int i = 0; i < K; i++)
     {
-        if ((stations[people[i].source_station]->positive) > 0 && strcmp(people[i].string,s4)!=0)
+        if ((stations[people[i].source_station].positive) > 0 && strcmp(people[i].string,s4)!=0)
         {
-            stations[people[i].source_station]->primary++;
+            stations[people[i].source_station].primary++;
             strcpy(people[i].string, s2);
-            stations[people[i].source_station]->primary_array[i]=i;
+            stations[people[i].source_station].primary_array[i]=i;
         }
-        if ((stations[people[i].source_station]->primary) > 0 && (stations[people[i].source_station]->positive!=0))
+        if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive!=0))
         {
-            stations[people[i].source_station]->secondary++;
+            stations[people[i].source_station].secondary++;
             strcpy(people[i].string, s3);
-            stations[people[i].source_station]->secondary_array[i]=i;
+            stations[people[i].source_station].secondary_array[i]=i;
         }
     }
 }
@@ -55,34 +55,34 @@ int printperson(struct person people[],int x)
         printf("Station=%d Condition=%s Date=%d",people[x].source_station,people[x].string,people[x].date);
     }
 }
-int stationsquery(struct tempstats *stations[],int K)
+int stationsquery(struct tempstats stations[],int K)
 {
     for(int i=0;i< K; i++)
     {
         printf("Station Number: %d\n",i+1);
-        printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n",stations[i]->positive,stations[i]->primary,stations[i]->secondary);
+        printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n",stations[i].positive,stations[i].primary,stations[i].secondary);
         printf("The indexes of Positive people are\n");
         for(int j=0;j<100;j++)
         {
-            if(stations[i]->positive_array[j]!=0)
+            if(stations[i].positive_array[j]!=0)
             {
-                printf("%d  ",stations[i]->positive_array[j]);
+                printf("%d  ",stations[i].positive_array[j]);
             }
         }
         printf("The indexes of Primary people are\n");
         for(int j=0;j<100;j++)
         {
-            if(stations[i]->primary_array[j]!=0)
+            if(stations[i].primary_array[j]!=0)
             {
-                printf("%d  ",stations[i]->primary_array[j]);
+                printf("%d  ",stations[i].primary_array[j]);
             }
         }
         printf("The indexes of secondary people are\n");
         for(int j=0;j<100;j++)
         {
-            if(stations[i]->secondary_array[j]!=0)
+            if(stations[i].secondary_array[j]!=0)
             {
-                printf("%d  ",stations[i]->secondary_array[j]);
+                printf("%d  ",stations[i].secondary_array[j]);
             }
         }
 
