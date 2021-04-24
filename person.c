@@ -16,15 +16,15 @@ int inputppl(int K)
     char s3[] = "Secondary";
     //people[N] = (struct person *)malloc(N * sizeof(struct person));
     //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
-    for (int i = 0; i < K; i++)
+    for (int i = 1; i <= K; i++)
     {
         printf("Enter the source station of %d\n",i+1);
-        scanf("%d ", &people[i].source_station);
+        scanf("%d", &people[i].source_station);
         strcpy(people[i].string, s1);
         //stations[]
     }
     int L = 1; //l=covid positive ppl;
-    for (int i = 0; i < L; i++)
+    for (int i = 1; i <= L; i++)
     {
         int x;
         printf("Enter the index of the positive person \n");
@@ -33,15 +33,15 @@ int inputppl(int K)
         stations[people[x].source_station].positive++;
         stations[people[x].source_station].positive_array[i]=x;
     }
-    for (int i = 0; i < K; i++)
+    for (int i = 1; i <= K; i++)
     {
-        if ((stations[people[i].source_station].positive) > 0 && strcmp(people[i].string,s4)!=0)
+        if ((stations[people[i].source_station].positive) > 0 && (strcmp(people[i].string,s4)!=0))
         {
             stations[people[i].source_station].primary++;
             strcpy(people[i].string, s2);
             stations[people[i].source_station].primary_array[i]=i;
         }
-        if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive!=0))
+        else if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive!=0))
         {
             stations[people[i].source_station].secondary++;
             strcpy(people[i].string, s3);
