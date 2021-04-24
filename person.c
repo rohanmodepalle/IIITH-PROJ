@@ -4,11 +4,12 @@
 #include <stdbool.h>
 #include <string.h>
 #include "person.h"
-
+#define N 100
+struct person *people[N];
+struct tempstats *stations[N];
 int inputppl(int K)
 {
-    struct person *people[K];
-    struct tempstats *stations[K];
+    
     char s1[] = "Neutral";
     people[K] = (struct person *)malloc(K * sizeof(struct person));
     stations[K] = (struct tempstats *)malloc(K * sizeof(struct tempstats));
@@ -22,6 +23,8 @@ int inputppl(int K)
     {
         int x;
         scanf("%d", &x);
+        char s1[]="Positive";
+        strcpy(people[i]->string, s1);
         stations[people[x]->source_station]->positive++;
     }
     for (int i = 0; i < K; i++)
@@ -29,11 +32,13 @@ int inputppl(int K)
         if ((stations[people[i]->source_station]->positive) > 0)
         {
             char s2[] = "Primary";
+            stations[people[i]->source_station]->primary++;
             strcpy(people[i]->string, s2);
         }
-        if ((stations[people[i]->source_station]->primary) > 0)
+        if ((stations[people[i]->source_station]->primary) > 0 && (stations[people[i]->source_station]->positive!=0))
         {
             char s3[] = "Secondary";
+            stations[people[i]->source_station]->secondary++;
             strcpy(people[i]->string, s3);
         }
     }
