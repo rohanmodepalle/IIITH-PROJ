@@ -2,7 +2,7 @@
 
 struct element {
     int data;
-    struct node* next;
+    struct element* next;
 };
 struct person {
     int date;
@@ -15,7 +15,7 @@ struct tempstats{
     int positive;
     int primary;
     int secondary;
-    struct node* root_positive;
-    struct node* root_primary;
-    struct node* root_secondary;
+    struct element* root_positive;
+    struct element* root_primary;
+    struct element* root_secondary;
 };

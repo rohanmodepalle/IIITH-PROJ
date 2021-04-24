@@ -17,8 +17,9 @@ struct element* createelement(int x)
 
     return temp;
 }
-void insertelement(struct element *root,struct element *temp)
+void insertelement(struct element *root,int x)
 {
+    struct element *temp=createelement(x);
     if(root==NULL)
     {
         root=temp;
@@ -30,6 +31,13 @@ void insertelement(struct element *root,struct element *temp)
         temp1=root;
         root=temp;
         root->next=temp1;
+    }
+}
+void printlist(struct element *root)
+{
+    while(root)
+    {
+        printf("%d  ",root->data);
     }
 }
 // int inputppl(int K)
@@ -131,4 +139,8 @@ int main()
     //     scanf("%d",&stat);
     //     stationsquery(stations,stat);
     // }
+    insertelement(stations[0].root_positive,1);
+    insertelement(stations[0].root_positive,2);
+    insertelement(stations[0].root_positive,6);
+    printlist(stations[0].root_positive);
 }
