@@ -2,7 +2,13 @@
 
 struct person {
     int date;
-    char position[10];
-    char source_station;
+    char string[10];
+    int source_station;
     char destination;
+};
+
+struct tempstats{
+    int positive;
+    int primary;
+    int secondary;
 };
