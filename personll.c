@@ -8,41 +8,57 @@
 struct person people[N];
 struct tempstats stations[N];
 
-struct element* createelement(int x)
+struct element *createelement(int x)
 {
-    struct element* temp;
-    temp=(struct element*)malloc(sizeof(struct element));
-    temp->data=x;
-    temp->next=NULL;
+    struct element *temp;
+    temp = (struct element *)malloc(sizeof(struct element));
+    temp->data = x;
+    temp->next = NULL;
 
     return temp;
 }
-void insertelement(struct element *root,int x)
+void insertelement(struct element** head_ref, int new_data)
 {
-    struct element *temp=createelement(x);
-    if(root==NULL)
-    {
-        root=temp;
-    }
-    else
-    {
-        struct element* temp1;
-        temp1=(struct element*)malloc(sizeof(struct element));
-        temp1=root;
-        root=temp;
-        root->next=temp1;
-    }
+    /* 1. allocate element */
+    struct element* new_element = (struct element*) malloc(sizeof(struct element));
+  
+    /* 2. put in the data  */
+    new_element->data  = new_data;
+  
+    /* 3. Make next of new element as head */
+    new_element->next = (*head_ref);
+  
+    /* 4. move the head to point to the new element */
+    (*head_ref)    = new_element;
 }
+// void insertelement(struct element *root, int x)
+// {
+//     struct element *temp = createelement(x);
+//     // if(root==NULL)
+//     // {
+//     //     root=temp;
+//     // }
+//     //else
+
+//     // struct element* temp1;
+//     // temp1=(struct element*)malloc(sizeof(struct element));
+//     // temp1=root;
+//     temp->next = root;
+//     root = temp;
+
+//     printf("inserted \n");
+// }
 void printlist(struct element *root)
 {
-    while(root)
+    while (root)
     {
-        printf("%d  ",root->data);
+        printf("%d  ", root->data);
+        root=root->next;
     }
 }
 // int inputppl(int K)
 // {
-    
+
 //     char s1[] = "Neutral";
 //     char s4[]="Positive";
 //     char s2[] = "Primary";
@@ -139,8 +155,8 @@ int main()
     //     scanf("%d",&stat);
     //     stationsquery(stations,stat);
     // }
-    insertelement(stations[0].root_positive,1);
-    insertelement(stations[0].root_positive,2);
-    insertelement(stations[0].root_positive,6);
+    insertelement(&stations[0].root_positive, 1);
+    insertelement(&stations[0].root_positive, 2);
+    insertelement(&stations[0].root_positive, 6);
     printlist(stations[0].root_positive);
 }
