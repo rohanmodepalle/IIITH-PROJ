@@ -14,5 +14,4 @@ struct tempstats{
     int positive_array[100];
     int primary_array[100];
     int secondary_array[100];
-
 };
