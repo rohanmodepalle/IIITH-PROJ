@@ -91,6 +91,14 @@ int stationsquery(struct tempstats stations[],int K)
 }
 int main()
 {
-    inputppl(4);
-    stationsquery(stations,3);
+    int pep;
+    printf("Enter Number of people\n");
+    scanf("%d",&pep);
+    inputppl(pep);
+    int stat;
+    printf("Enter Station To query\n");
+    {
+        scanf("%d",&stat);
+        stationsquery(stations,stat);
+    }
 }
