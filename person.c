@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "person.h"
-#define N 100
+#define N 5
 struct person people[N];
 struct tempstats stations[N];
 int inputppl(int K)
@@ -20,13 +20,14 @@ int inputppl(int K)
     {
         scanf("%d ", &people[i].source_station);
         strcpy(people[i].string, s1);
+        //stations[]
     }
-    int L = 10; //l=covid positive ppl;
+    int L = 1; //l=covid positive ppl;
     for (int i = 0; i < L; i++)
     {
         int x;
         scanf("%d", &x);
-        strcpy(people[i].string, s4);
+        strcpy(people[x].string, s4);
         stations[people[x].source_station].positive++;
         stations[people[x].source_station].positive_array[i]=x;
     }
@@ -91,5 +92,5 @@ int stationsquery(struct tempstats stations[],int K)
 int main()
 {
     inputppl(4);
-    stationsquery(stations,2);
+    stationsquery(stations,3);
 }
