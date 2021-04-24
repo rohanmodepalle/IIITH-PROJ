@@ -18,7 +18,7 @@ int inputppl(int K)
     //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
     for (int i = 1; i <= K; i++)
     {
-        printf("Enter the source station of %d\n",i+1);
+        printf("Enter the source station of %d\n",i);
         scanf("%d", &people[i].source_station);
         strcpy(people[i].string, s1);
         //stations[]
@@ -60,9 +60,9 @@ int printperson(struct person people[],int x)
 }
 int stationsquery(struct tempstats stations[],int K)
 {
-    for(int i=0;i< K; i++)
+    for(int i=1;i<= K; i++)
     {
-        printf("Station Number: %d\n",i+1);
+        printf("Station Number: %d\n",i);
         printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n",stations[i].positive,stations[i].primary,stations[i].secondary);
         printf("The indexes of Positive people are\n");
         for(int j=0;j<100;j++)
