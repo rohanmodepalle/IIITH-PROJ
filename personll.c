@@ -8,7 +8,8 @@
 struct person people[N];
 struct tempstats stations[N];
 
-struct element *createelement(int x)
+//Linked Lists Utility function.
+struct element *createelement(int x) 
 {
     struct element *temp;
     temp = (struct element *)malloc(sizeof(struct element));
@@ -17,6 +18,7 @@ struct element *createelement(int x)
 
     return temp;
 }
+//linked lists insertion function......used root node replacement to trim time complexity
 void insertelement(struct element **head_ref, int new_data)
 {
     /* 1. allocate element */
@@ -48,6 +50,7 @@ void insertelement(struct element **head_ref, int new_data)
 
 //     printf("inserted \n");
 // }
+//Linked list utility which prints
 void printlist(struct element *root)
 {
     if (root == NULL)
@@ -65,6 +68,25 @@ void printlist(struct element *root)
     }
     printf("\n\n\n\n");
 }
+//function which individually queries the station that we provide
+void individual_station_query()
+{
+    int x;
+    printf("Enter The Station To Query\n");
+    scanf("%d", &x);
+    printf("Station Number: %d\n", x);
+        printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n", stations[x].positive, stations[x].primary, stations[x].secondary);
+        printf("The indexes of Positive people are\n");
+        printlist(stations[x].root_positive);
+        //printf("\n");
+        printf("The indexes of Primary people are\n");
+        printlist(stations[x].root_primary);
+        //printf("\n");
+        printf("The indexes of secondary people are\n");
+        printlist(stations[x].root_secondary);
+        //printf("\n");
+}
+//utility input function
 int inputppl(int K)
 {
 
@@ -107,17 +129,31 @@ int inputppl(int K)
         }
     }
 }
-int printperson(struct person people[], int x)
+//incomplete function
+void printperson( int x)
 {
     for (int i = 1; i < 15; i++)
     {
         //printf("Day %d",i);
         people[x].date++;
-        printf("Station=%d Condition=%s Date=%d", people[x].source_station, people[x].string, people[x].date);
+        printf("Station=%d Condition=%s Date=%d\n", people[x].source_station, people[x].string, people[x].date);
     }
 }
-int stationsquery(struct tempstats stations[], int K)
+//individual query based function
+void individual_person_query()
 {
+    int x;
+    printf("Enter The Person's Index You Want to Query\n");
+    scanf("%d",&x);
+    printf("Station=%d Condition=%s Date=%d\n", people[x].source_station, people[x].string, people[x].date);
+    printf("\n\n\n");
+}
+//prints the situation of all the stations till the given input
+int stationsquery(struct tempstats stations[])
+{
+    int K;
+    printf("Enter Till Which Station You Want To Query\n");
+    scanf("%d",&K);
     for (int i = 1; i <= K; i++)
     {
         printf("Station Number: %d\n", i);
@@ -140,13 +176,7 @@ int main()
     scanf("%d", &pep);
     inputppl(pep);
     int stat;
-    printf("Enter Station To query\n");
-    {
-        scanf("%d", &stat);
-        stationsquery(stations, stat);
-    }
-    // insertelement(&stations[0].root_positive, 1);
-    // insertelement(&stations[0].root_positive, 2);
-    // insertelement(&stations[0].root_positive, 6);
-    // printlist(stations[0].root_positive);
+    stationsquery(stations);
+    individual_person_query();
+    individual_station_query();
 }
