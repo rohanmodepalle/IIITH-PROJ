@@ -17,19 +17,19 @@ struct element *createelement(int x)
 
     return temp;
 }
-void insertelement(struct element** head_ref, int new_data)
+void insertelement(struct element **head_ref, int new_data)
 {
     /* 1. allocate element */
-    struct element* new_element = (struct element*) malloc(sizeof(struct element));
-  
+    struct element *new_element = (struct element *)malloc(sizeof(struct element));
+
     /* 2. put in the data  */
-    new_element->data  = new_data;
-  
+    new_element->data = new_data;
+
     /* 3. Make next of new element as head */
     new_element->next = (*head_ref);
-  
+
     /* 4. move the head to point to the new element */
-    (*head_ref)    = new_element;
+    (*head_ref) = new_element;
 }
 // void insertelement(struct element *root, int x)
 // {
@@ -50,24 +50,33 @@ void insertelement(struct element** head_ref, int new_data)
 // }
 void printlist(struct element *root)
 {
-    while (root)
+    if (root == NULL)
     {
-        printf("%d  ", root->data);
-        root=root->next;
+        printf("This list is empty.\n");
     }
+    else
+    {
+        while (root)
+        {
+            printf("%d  ", root->data);
+            root = root->next;
+        }
+        printf("\n");
+    }
+    printf("\n\n\n\n");
 }
 int inputppl(int K)
 {
 
     char s1[] = "Neutral";
-    char s4[]="Positive";
+    char s4[] = "Positive";
     char s2[] = "Primary";
     char s3[] = "Secondary";
     //people[N] = (struct person *)malloc(N * sizeof(struct person));
     //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
     for (int i = 1; i <= K; i++)
     {
-        printf("Enter the source station of %d\n",i);
+        printf("Enter the source station of %d\n", i);
         scanf("%d", &people[i].source_station);
         strcpy(people[i].string, s1);
         //stations[]
@@ -80,61 +89,61 @@ int inputppl(int K)
         scanf("%d", &x);
         strcpy(people[x].string, s4);
         stations[people[x].source_station].positive++;
-        insertelement(&stations[people[x].source_station].root_positive,x);
+        insertelement(&stations[people[x].source_station].root_positive, x);
     }
     for (int i = 1; i <= K; i++)
     {
-        if ((stations[people[i].source_station].positive) > 0 && (strcmp(people[i].string,s4)!=0))
+        if ((stations[people[i].source_station].positive) > 0 && (strcmp(people[i].string, s4) != 0))
         {
             stations[people[i].source_station].primary++;
             strcpy(people[i].string, s2);
-            insertelement(&stations[people[i].source_station].root_primary,i);
+            insertelement(&stations[people[i].source_station].root_primary, i);
         }
-        else if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive!=0))
+        else if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive != 0) && (strcmp(people[i].string, s4) != 0))
         {
             stations[people[i].source_station].secondary++;
             strcpy(people[i].string, s3);
-            insertelement(&stations[people[i].source_station].root_secondary,i);
+            insertelement(&stations[people[i].source_station].root_secondary, i);
         }
     }
 }
-int printperson(struct person people[],int x)
+int printperson(struct person people[], int x)
 {
-    for(int i=1;i<15;i++)
+    for (int i = 1; i < 15; i++)
     {
         //printf("Day %d",i);
         people[x].date++;
-        printf("Station=%d Condition=%s Date=%d",people[x].source_station,people[x].string,people[x].date);
+        printf("Station=%d Condition=%s Date=%d", people[x].source_station, people[x].string, people[x].date);
     }
 }
-int stationsquery(struct tempstats stations[],int K)
+int stationsquery(struct tempstats stations[], int K)
 {
-    for(int i=1;i<= K; i++)
+    for (int i = 1; i <= K; i++)
     {
-        printf("Station Number: %d\n",i);
-        printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n",stations[i].positive,stations[i].primary,stations[i].secondary);
+        printf("Station Number: %d\n", i);
+        printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n", stations[i].positive, stations[i].primary, stations[i].secondary);
         printf("The indexes of Positive people are\n");
         printlist(stations[i].root_positive);
-        printf("\n");
+        //printf("\n");
         printf("The indexes of Primary people are\n");
         printlist(stations[i].root_primary);
-        printf("\n");
+        //printf("\n");
         printf("The indexes of secondary people are\n");
         printlist(stations[i].root_secondary);
-        printf("\n");
+        //printf("\n");
     }
 }
 int main()
 {
     int pep;
     printf("Enter Number of people\n");
-    scanf("%d",&pep);
+    scanf("%d", &pep);
     inputppl(pep);
     int stat;
     printf("Enter Station To query\n");
     {
-        scanf("%d",&stat);
-        stationsquery(stations,stat);
+        scanf("%d", &stat);
+        stationsquery(stations, stat);
     }
     // insertelement(&stations[0].root_positive, 1);
     // insertelement(&stations[0].root_positive, 2);
