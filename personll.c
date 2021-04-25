@@ -141,4 +141,3 @@ int main()
     // insertelement(&stations[0].root_positive, 6);
     // printlist(stations[0].root_positive);
 }
-hello
