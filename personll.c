@@ -115,7 +115,7 @@ int inputppl(int K)
         //stations[]
     }
     int L ;
-    printf("Enter the NUmber of covid positive people\n");
+    printf("Enter the Number of covid positive people\n");
     scanf("%d",&L);
      //l=covid positive ppl;
     for (int i = 1; i <= L; i++)
@@ -163,7 +163,7 @@ void individual_person_query()
     int x;
     printf("Enter The Person's Index You Want to Query\n");
     scanf("%d",&x);
-    printf("Station=%d Condition=%s Date=%d\n", people[x].source_station, people[x].string, people[x].date);
+    printf("Station=%d\nCondition=%s\nDate=%d\n", people[x].source_station, people[x].string, people[x].date);
     printf("\n\n\n");
 }
 //=============================================================================
