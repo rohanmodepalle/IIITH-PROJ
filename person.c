@@ -7,6 +7,9 @@
 #define N 5
 struct person people[N];
 struct tempstats stations[N];
+/* this is a rudimentary array based implementation which sucks both space wise as well as time wise
+written just to give a basic idea for the program
+written by N Harsha Vardhan .....thanks for reading*/
 int inputppl(int K)
 {
     

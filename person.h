@@ -1,5 +1,7 @@
 //#include "graph.c"
-
+/* this is a rudimentary array based implementation which sucks both space wise as well as time wise
+written just to give a basic idea for the program
+written by N Harsha Vardhan .....thanks for reading*/
 struct person {
     int date;
     char string[10];

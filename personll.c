@@ -7,8 +7,13 @@
 #define N 100
 struct person people[N];
 struct tempstats stations[N];
-
+//=============================================================================
+//Author::N Harsha Vardhan
+//Dated:: 26th Apr 2021
+//Time:: 1:16 AM
+//=============================================================================
 //Linked Lists Utility function.
+//=============================================================================
 struct element *createelement(int x) 
 {
     struct element *temp;
@@ -18,7 +23,9 @@ struct element *createelement(int x)
 
     return temp;
 }
+//=============================================================================
 //linked lists insertion function......used root node replacement to trim time complexity
+//=============================================================================
 void insertelement(struct element **head_ref, int new_data)
 {
     /* 1. allocate element */
@@ -68,7 +75,9 @@ void printlist(struct element *root)
     }
     printf("\n\n\n\n");
 }
+//=============================================================================
 //function which individually queries the station that we provide
+//=============================================================================
 void individual_station_query()
 {
     int x;
@@ -86,7 +95,9 @@ void individual_station_query()
         printlist(stations[x].root_secondary);
         //printf("\n");
 }
+//=============================================================================
 //utility input function
+//=============================================================================
 int inputppl(int K)
 {
 
@@ -103,7 +114,10 @@ int inputppl(int K)
         strcpy(people[i].string, s1);
         //stations[]
     }
-    int L = 1; //l=covid positive ppl;
+    int L ;
+    printf("Enter the NUmber of covid positive people\n");
+    scanf("%d",&L);
+     //l=covid positive ppl;
     for (int i = 1; i <= L; i++)
     {
         int x;
@@ -129,7 +143,9 @@ int inputppl(int K)
         }
     }
 }
+//=============================================================================
 //incomplete function
+//=============================================================================
 void printperson( int x)
 {
     for (int i = 1; i < 15; i++)
@@ -139,7 +155,9 @@ void printperson( int x)
         printf("Station=%d Condition=%s Date=%d\n", people[x].source_station, people[x].string, people[x].date);
     }
 }
+//=============================================================================
 //individual query based function
+//=============================================================================
 void individual_person_query()
 {
     int x;
@@ -148,7 +166,9 @@ void individual_person_query()
     printf("Station=%d Condition=%s Date=%d\n", people[x].source_station, people[x].string, people[x].date);
     printf("\n\n\n");
 }
+//=============================================================================
 //prints the situation of all the stations till the given input
+//=============================================================================
 int stationsquery(struct tempstats stations[])
 {
     int K;
@@ -169,6 +189,9 @@ int stationsquery(struct tempstats stations[])
         //printf("\n");
     }
 }
+//=============================================================================
+//main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
+//=============================================================================
 int main()
 {
     int pep;
