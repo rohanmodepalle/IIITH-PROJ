@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "personll.h"
-#define N 5
+#define N 100
 struct person people[N];
 struct tempstats stations[N];
 
@@ -88,7 +88,7 @@ int inputppl(int K)
         {
             stations[people[i].source_station].primary++;
             strcpy(people[i].string, s2);
-            insertelement(&stations[people[i].source_station].root_positive,i);
+            insertelement(&stations[people[i].source_station].root_primary,i);
         }
         else if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive!=0))
         {
