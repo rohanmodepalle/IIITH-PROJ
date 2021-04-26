@@ -23,7 +23,13 @@ typedef struct edge {
 	int weight;
 	Edge* next_edge;
 }Edge;
-
+typedef struct path{
+	float safety_val;
+	int road_len;
+    int size;
+	int* arr;
+}Path;
+Path* total_paths(int n);
 // create a new, empty graph, with space for a maximum of n vertices
 Graph* new_graph(int n);
 // destroy a graph, its vertices, and their edges
@@ -37,13 +43,14 @@ void graph_add_d_edge(Graph* graph, int u, int v, int w);
 
 
 //TRAVERSALS
-void value_store(Graph* graph, int destination_id, int id, bool is_source,
+void value_store(Path *paths,Graph* graph, int destination_id, int id, bool is_source,
               List* stack,List* curr_dist,List* distances,bool visited[]);
 void value_get(Graph* graph, int destination_id, int id, bool is_source,
               List* stack,List* curr_dist,List* distances,bool visited[]) ;
 void stack_print(List* stack, Graph* graph, bool print_dist,
                  int total_distance);
-void store(List* stack, Graph* graph,bool accept,int total_dist);
+void store(int i,Path* paths,List* stack, Graph* graph,bool accept,int total_dist);
 int distance_sum(List* curr_distance);
-int** all_paths(Graph* graph, int source_id, int destination_id);
+void all_paths(Graph* graph,int source_id,int destination_id);
+
 #endif

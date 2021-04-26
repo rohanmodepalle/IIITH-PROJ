@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include "graph.c"
+//#include "personll.c"
 
 int main(){
     printf("Enter number of stations,roads and people\n");
@@ -28,13 +29,5 @@ int main(){
     graph_add_u_edge(g,0,5,15);
     graph_add_u_edge(g,5,4,95);   
     all_paths(g,0,2);
-    //shortest_path(g,0,2);
-    int** parr;
-    parr = all_paths(g,0,2);
-    for(int i = 0;i<row;i++){
-        for(int j =0;j<column;j++){
-            printf("%d ",parr[i][j]);
-        }
-        printf("\n");
-    }
+
 }

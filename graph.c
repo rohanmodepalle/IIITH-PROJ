@@ -4,9 +4,9 @@
 #include <string.h>
 
 #include "graph.h"
+//#include "personll.c"
 
-List* global;
-int row,column;
+int itr;
 
 // create a new vertex with a specific label
 Vertex* new_vertex(const char* label,int id) {
@@ -67,6 +67,13 @@ Graph* new_graph(int n) {
 	
 	return graph;
 }
+Path* total_paths(int n){
+    Path* paths = (struct path*)malloc(n*sizeof(struct path));
+    assert(paths);
+    paths->size=0;
+
+    return paths;
+}
 // destroy a graph, its vertices, and their edges
 void free_graph(Graph* graph) {
 	if (graph) {
@@ -74,7 +81,6 @@ void free_graph(Graph* graph) {
 		for (i = 0; i < graph->n; i++) {
 			free_vertex(graph->vertices[i]);
 		}
-
 		free(graph->vertices);
 		free(graph);	
 	}
@@ -120,58 +126,32 @@ void false_array(Graph* graph, bool array[]) {
         array[i] = false;
 }
 //returns array with all paths and required values
-int** all_paths(Graph* graph, int source_id, int destination_id) {
-    
-    // Create zeroed visited array
+
+void all_paths(Graph* graph,int source_id,int destination_id){
+    // Creates zeroed visited array and initializes it
+    itr =0;
     bool visited[graph->n];
     false_array(graph, visited);
     //global variable now has a stack to accept values
-    global=new_stack();
     // Create a stack
     List* stack=new_stack();
     List* curr_dist=new_stack();
     List* distances=new_queue();
+    //we get total number of paths from this function
     value_get(graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
-
     int m = queue_size(distances);
-    int n = ((graph->maxn)+3);
-    row = m;
-    column = n;
-    int **arr;
-    arr = malloc(sizeof(int*) *m);
-    for(int i = 0;i<m;i++){
-        arr[i] = malloc(sizeof(int*) *n);
-    }
-    for(int i = 0;i<m;i++){
-        for(int j =0;j<n;j++){
-            arr[i][j] = -1;
+    Path *paths = total_paths(m);
+    value_store(paths, graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
+    for(int i =0;i<m;i++){
+        printf("%d ",(paths+i)->road_len);
+        printf("\n");
+        for(int j =0;j<(paths+i)->size;j++){
+            printf("%d ",(paths+i)->arr[j]);
         }
     }
-    value_store(graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
-
-    //NOTE: GLOBAL STACK HAS FORMAT: (-2,dist,path)*m (m->paths)
-    
-    //assert((stack_pop(global))==-2);
-    //To ensure that top of stack has element -2
-    int x =0,p=0,q=1;
-    List* tempstack=new_stack();
-    while (!stack_is_empty(global))
-        stack_push(tempstack, stack_pop(global));
-    while(stack_size(tempstack)>0){
-        if(x==-2){
-            p++;
-            q=1;
-        }
-        x = stack_pop(tempstack);
-        arr[p][q]=x;
-        q++;
-    }
-    free_stack(tempstack);
-    free_stack(global);
     free_stack(stack);
     free_stack(curr_dist);
     free_queue(distances);
-    return arr;
 }
 
 // Finds a simple path from id to destination_id using depth first search
@@ -219,7 +199,7 @@ void value_get(Graph* graph, int destination_id, int id, bool is_source,
         }
     }
 }
-void value_store(Graph* graph, int destination_id, int id, bool is_source,
+void value_store(Path *paths, Graph* graph, int destination_id, int id, bool is_source,
               List* stack,List* curr_dist,List* distances,bool visited[]) {
     
     int total_dist=0;
@@ -233,7 +213,6 @@ void value_store(Graph* graph, int destination_id, int id, bool is_source,
     // Iterate until the stack is empty
     while (!stack_is_empty(stack)) {
         id = curredge->v;
-        
         // Vertex is unvisited
         if (!visited[id]) {
             visited[id] = true;
@@ -243,15 +222,16 @@ void value_store(Graph* graph, int destination_id, int id, bool is_source,
             // Destination is reached
             if (destination_id == id) {
                 total_dist=distance_sum(curr_dist);
-                store(stack,graph,true,total_dist);
-                //stack_print(stack, graph, true, total_dist);
+                store(itr,paths,stack,graph,true,total_dist);
+                //printf("%d %d ",total_dist,itr);
                 stack_pop(stack);
                 stack_pop(curr_dist);
                 queue_enqueue(distances, total_dist);
+                itr++;
             }
             // Destination is not reached
             else
-                value_store(graph, destination_id, id, false, stack,curr_dist,distances,visited);
+                value_store(paths,graph, destination_id, id, false, stack,curr_dist,distances,visited);
             
             visited[id] = false;
         }
@@ -281,19 +261,22 @@ int distance_sum(List* curr_distance) {
     free_stack(tempstack);
 }
 
-void store(List* stack, Graph* graph,bool accept,int total_dist){
+void store(int i,Path *paths,List* stack, Graph* graph,bool accept,int total_dist){
     
+    int j=0;
+    (paths+i)->road_len = total_dist;
+    (paths+i)->size=stack_size(stack);
+    (paths+i)->arr = malloc(sizeof(int)*stack_size(stack));
     int x;
-    stack_push(global,total_dist);
     List* tempst=new_stack();
     while (!stack_is_empty(stack))
         stack_push(tempst, stack_pop(stack));
     while(stack_size(tempst)>0){
         x = stack_pop(tempst);
-        stack_push(global,x);
+        (paths+i)->arr[j]=x;
         stack_push(stack,x);
+        j++;
     }
-    stack_push(global,-2);
     free_stack(tempst);
 }
 
@@ -337,3 +320,64 @@ void store(List* stack, Graph* graph,bool accept,int total_dist){
 //     free_stack(tempstack);
 // }
 
+
+// int** tall_paths(Graph* graph, int source_id, int destination_id) {
+    
+//     // Create zeroed visited array
+//     bool visited[graph->n];
+//     false_array(graph, visited);
+//     //global variable now has a stack to accept values
+//     global=new_stack();
+//     // Create a stack
+//     List* stack=new_stack();
+//     List* curr_dist=new_stack();
+//     List* distances=new_queue();
+//     value_get(graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
+
+//     int m = queue_size(distances);
+//     int n = ((graph->maxn)+3);
+//     row = m;
+//     column = n;
+//     int **arr;
+//     arr = malloc(sizeof(int*) *m);
+//     for(int i = 0;i<m;i++){
+//         arr[i] = malloc(sizeof(int*) *n);
+//     }
+//     for(int i = 0;i<m;i++){
+//         for(int j =0;j<n;j++){
+//             arr[i][j] = -1;
+//         }
+//     }
+//     //value_store(paths,graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
+
+//     //NOTE: GLOBAL STACK HAS FORMAT: (-2,dist,path)*m (m->paths)
+    
+//     //assert((stack_pop(global))==-2);
+//     //To ensure that top of stack has element -2
+//     int x =0,p=0,q=1;
+//     List* tempstack=new_stack();
+//     while (!stack_is_empty(global))
+//         stack_push(tempstack, stack_pop(global));
+//     while(stack_size(tempstack)>0){
+//         if(x==-2){
+//             p++;
+//             q=1;
+//         }
+//         x = stack_pop(tempstack);
+//         arr[p][q]=x;
+//         q++;
+//     }
+//     float valarr[2][m];
+//     float dangerval=0;
+//     for(int i = 0;i<m;i++){
+//         for(int j = 2;j<n;j++ ){
+//             //dangerval = stations[arr[i][j]].positive+(stations[arr[i][j]].primary)/5+(stations[arr[i][j]].secondary)/10;
+//         }
+//     }
+//     free_stack(tempstack);
+//     free_stack(global);
+//     free_stack(stack);
+//     free_stack(curr_dist);
+//     free_queue(distances);
+//     return arr;
+// }
