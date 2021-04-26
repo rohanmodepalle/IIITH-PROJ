@@ -58,11 +58,13 @@ void insertelement(struct element **head_ref, int new_data)
 //     printf("inserted \n");
 // }
 //Linked list utility which prints
-void printlist(struct element *root)
+int printlist(struct element *root)
 {
     if (root == NULL)
     {
         printf("This list is empty.\n");
+        printf("\n\n\n\n");
+        return 0;
     }
     else
     {
@@ -74,6 +76,7 @@ void printlist(struct element *root)
         printf("\n");
     }
     printf("\n\n\n\n");
+    return 0;
 }
 //=============================================================================
 //function which individually queries the station that we provide
