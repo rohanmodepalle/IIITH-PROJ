@@ -52,5 +52,7 @@ void stack_print(List* stack, Graph* graph, bool print_dist,
 void store(int i,Path* paths,List* stack, Graph* graph,bool accept,int total_dist);
 int distance_sum(List* curr_distance);
 void all_paths(Graph* graph,int source_id,int destination_id);
+float safety_value(int n,int arr[n]);
+void sorter(Path *paths,int m);
 
 #endif

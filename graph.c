@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "graph.h"
-//#include "personll.c"
+#include "personll.c"
 
 int itr;
 
@@ -142,16 +142,44 @@ void all_paths(Graph* graph,int source_id,int destination_id){
     int m = queue_size(distances);
     Path *paths = total_paths(m);
     value_store(paths, graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
+    for(int i = 0;i<m;i++){
+        (paths+i)->safety_val = safety_value((paths+i)->size,(paths+i)->arr); 
+    }
+    sorter(paths,m);
     for(int i =0;i<m;i++){
         printf("%d ",(paths+i)->road_len);
-        printf("\n");
+        printf("%f ",(paths+i)->safety_val);
         for(int j =0;j<(paths+i)->size;j++){
             printf("%d ",(paths+i)->arr[j]);
         }
+        printf("\n");
     }
     free_stack(stack);
     free_stack(curr_dist);
     free_queue(distances);
+}
+
+void sorter(Path *paths,int m){
+    int outer, inner;
+    Path temp;
+    for(outer=0;outer<m;outer++)
+    {
+        for(inner=outer+1;inner<m;inner++)
+        
+            if(paths[outer].safety_val>paths[inner].safety_val)
+            {
+            temp=paths[outer];
+            paths[outer]=paths[inner];
+            paths[inner]=temp;
+            }
+            else if(paths[outer].safety_val==paths[inner].safety_val){
+                if(paths[outer].road_len>paths[inner].road_len){
+                    temp=paths[outer];
+                    paths[outer]=paths[inner];
+                    paths[inner]=temp;
+                }
+            }
+        }
 }
 
 // Finds a simple path from id to destination_id using depth first search
@@ -278,6 +306,18 @@ void store(int i,Path *paths,List* stack, Graph* graph,bool accept,int total_dis
         j++;
     }
     free_stack(tempst);
+}
+float safety_value(int n,int arr[n]){
+    float danger_val = 0;
+    for(int i=0;i<n;i++){
+        danger_val += (stations[arr[i]].positive)+(stations[arr[i]].primary/5)+(stations[arr[i]].secondary/10);
+    }
+    if(danger_val==0){
+        return 1;
+    }
+    else{
+        return (1/danger_val);
+    }
 }
 
 //no use for now

@@ -58,11 +58,13 @@ void insertelement(struct element **head_ref, int new_data)
 //     printf("inserted \n");
 // }
 //Linked list utility which prints
-void printlist(struct element *root)
+int printlist(struct element *root)
 {
     if (root == NULL)
     {
         printf("This list is empty.\n");
+        printf("\n\n\n\n");
+        return 0;
     }
     else
     {
@@ -74,6 +76,7 @@ void printlist(struct element *root)
         printf("\n");
     }
     printf("\n\n\n\n");
+    return 0;
 }
 //=============================================================================
 //function which individually queries the station that we provide
@@ -192,14 +195,14 @@ int stationsquery(struct tempstats stations[])
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
-int main()
-{
-    int pep;
-    printf("Enter Number of people\n");
-    scanf("%d", &pep);
-    inputppl(pep);
-    int stat;
-    stationsquery(stations);
-    individual_person_query();
-    individual_station_query();
-}
+// int main()
+// {
+//     int pep;
+//     printf("Enter Number of people\n");
+//     scanf("%d", &pep);
+//     inputppl(pep);
+//     int stat;
+//     stationsquery(stations);
+//     individual_person_query();
+//     individual_station_query();
+// }
