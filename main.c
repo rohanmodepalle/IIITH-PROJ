@@ -17,7 +17,7 @@ int main(){
     }
     printf("\n");
     printf("Enter the bidirectional paths:\n");
-    //scanf for roads to be entered and stored.
+    //scanf for roads to be entered and stored. 
     //format of i-1 for edge number
     for(int i = 0;i<num_roads;i++){
         scanf("%d %d %d",&u,&v,&length);
