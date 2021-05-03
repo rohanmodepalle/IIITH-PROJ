@@ -195,14 +195,16 @@ int stationsquery(struct tempstats stations[])
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
-int main()
-{
-    int pep;
-    printf("Enter Number of people\n");
-    scanf("%d", &pep);
-    inputppl(pep);
-    int stat;
-    stationsquery(stations);
-    individual_person_query();
-    individual_station_query();
-}
+//=======
+// int main()
+// {
+//     int pep;
+//     printf("Enter Number of people\n");
+//     scanf("%d", &pep);
+//     inputppl(pep);
+//     int stat;
+//     stationsquery(stations);
+//     individual_person_query();
+//     individual_station_query();
+// }
+//>>>>>>> upstream/main
