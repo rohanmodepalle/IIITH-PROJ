@@ -33,3 +33,4 @@ struct tempstats{
     struct element* root_primary;
     struct element* root_secondary;
 };
+//im a noob
