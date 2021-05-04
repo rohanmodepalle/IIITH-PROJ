@@ -22,6 +22,10 @@ struct person {
     char destination;
 };
 
+struct date {
+    int index;
+    int dates[15];
+};
 //=============================================================================
 //this is a structure for stroing the various information regarding the stations
 //=============================================================================
