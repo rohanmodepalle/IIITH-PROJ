@@ -278,20 +278,20 @@ void printer(int index)
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
-int main()
-{
-    int pep;
-    printf("Enter Number of people\n");
-    scanf("%d", &pep);
-    //pep=1;
-    inputppl(pep);
-    int stat;
-    //stationsquery(stations);
-    //individual_person_query();
-    //individual_station_query();
-    traveller(1);
-    //traveller(0);
-    individual_person_query();
-    printer(0);
-}
-
+// int main()
+// {
+//     int pep;
+//     printf("Enter Number of people\n");
+//     scanf("%d", &pep);
+//     //pep=1;
+//     inputppl(pep);
+//     int stat;
+//     //stationsquery(stations);
+//     //individual_person_query();
+//     //individual_station_query();
+//     //printf("Enter ")
+//     //traveller(1);
+//     //traveller(0);
+//     individual_person_query();
+//     printer(0);
+// }
