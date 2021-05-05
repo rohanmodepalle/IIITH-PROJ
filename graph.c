@@ -180,7 +180,7 @@ void all_paths(Graph *graph, int source_id, int destination_id)
     int m = queue_size(distances);
     //based on total number of paths found above, we make list of paths and INIT them
     Path *paths = total_paths(m);
-    //this stores all the paths, the road lengths in a random arbitary order and returns it for futher processing
+    //this stores all the paths, the road lengths in a random arbitrary order and returns it for futher processing
     value_store(paths, graph, destination_id, source_id, true, stack, curr_dist, distances, visited);
     //now the only thing missing is safety values
     //using data from personll.c and personll.h we access the data of people and stations
