@@ -7,6 +7,10 @@
 #define N 100
 struct person people[N];
 struct tempstats stations[N];
+char s1[] = "Neutral";
+char s4[] = "Positive";
+char s2[] = "Primary";
+char s3[] = "Secondary";
 //=============================================================================
 //Author::N Harsha Vardhan
 //Dated:: 26th Apr 2021
@@ -24,7 +28,7 @@ struct element *createelement(int x)
     return temp;
 }
 //=============================================================================
-//linked lists insertion function......used root node replacement to trim time complexity
+//linked lists insertion function......used root element replacement to trim time complexity
 //=============================================================================
 void insertelement(struct element **head_ref, int new_data)
 {
@@ -40,6 +44,37 @@ void insertelement(struct element **head_ref, int new_data)
     /* 4. move the head to point to the new element */
     (*head_ref) = new_element;
 }
+//=============================================================================
+//linked lists deletion function......
+void deleteelement(struct element** head_ref, int key)
+{
+    // Store head element
+    struct element *temp = *head_ref, *prev;
+ 
+    // If head element itself holds the key to be deleted
+    if (temp != NULL && temp->data == key) {
+        *head_ref = temp->next; // Changed head
+        free(temp); // free old head
+        return;
+    }
+ 
+    // Search for the key to be deleted, keep track of the
+    // previous element as we need to change 'prev->next'
+    while (temp != NULL && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+ 
+    // If key was not present in linked list
+    if (temp == NULL)
+        return;
+ 
+    // Unlink the element from linked list
+    prev->next = temp->next;
+ 
+    free(temp); // Free memory
+}
+//=============================================================================
 // void insertelement(struct element *root, int x)
 // {
 //     struct element *temp = createelement(x);
@@ -104,10 +139,7 @@ void individual_station_query()
 int inputppl(int K)
 {
 
-    char s1[] = "Neutral";
-    char s4[] = "Positive";
-    char s2[] = "Primary";
-    char s3[] = "Secondary";
+    
     //people[N] = (struct person *)malloc(N * sizeof(struct person));
     //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
     for (int i = 1; i <= K; i++)
@@ -205,6 +237,19 @@ void dateconstanter(int index,int station, int x, int y)
     }
 }
 //=============================================================================
+//takes person as input and his station and changes person and station statuses
+//=============================================================================
+void changestatuses(int person,int station)
+{
+    if(/*stations[person].primary>0 &&*/ strcmp(people[person].string,s4)!=0)
+    {
+        strcpy(people[person].string,s3);
+        stations[person].secondary++;
+        insertelement(&stations[person].root_secondary,person);
+        //deleteelement()
+    }
+}
+//=============================================================================
 //takes person as input and makes his travel iterinary
 //=============================================================================
 void traveller(int i)
@@ -217,6 +262,7 @@ void traveller(int i)
     {
         scanf("%d %d %d", &x, &y,&station);
         dateconstanter(i,station,x,y);
+        changestatuses(i,station);
     }
 }
 //=============================================================================
@@ -235,15 +281,17 @@ void printer(int index)
 int main()
 {
     int pep;
-    //printf("Enter Number of people\n");
-    //scanf("%d", &pep);
-    pep=1;
-    //inputppl(pep);
-    //int stat;
+    printf("Enter Number of people\n");
+    scanf("%d", &pep);
+    //pep=1;
+    inputppl(pep);
+    int stat;
     //stationsquery(stations);
     //individual_person_query();
     //individual_station_query();
-    traveller(0);
+    traveller(1);
+    //traveller(0);
+    individual_person_query();
     printer(0);
 }
 
