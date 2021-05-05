@@ -12,6 +12,8 @@ struct element {
     int data;
     struct element* next;
 };
+
+
 //=============================================================================
 //this is the structure for storing various details of the people
 //=============================================================================
@@ -19,9 +21,12 @@ struct person {
     int date;
     char string[10];
     int source_station;
+    //=============================================================================
+    //this is the structure for storing various details of the people travel itenary
+    //=============================================================================
+    int dates[15];
     char destination;
 };
-
 //=============================================================================
 //this is a structure for stroing the various information regarding the stations
 //=============================================================================
