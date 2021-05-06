@@ -24,7 +24,6 @@ struct element *createelement(int x)
     temp = (struct element *)malloc(sizeof(struct element));
     temp->data = x;
     temp->next = NULL;
-
     return temp;
 }
 //=============================================================================
@@ -46,32 +45,34 @@ void insertelement(struct element **head_ref, int new_data)
 }
 //=============================================================================
 //linked lists deletion function......
-void deleteelement(struct element** head_ref, int key)
+void deleteelement(struct element **head_ref, int key)
 {
     // Store head element
     struct element *temp = *head_ref, *prev;
- 
+
     // If head element itself holds the key to be deleted
-    if (temp != NULL && temp->data == key) {
+    if (temp != NULL && temp->data == key)
+    {
         *head_ref = temp->next; // Changed head
-        free(temp); // free old head
+        free(temp);             // free old head
         return;
     }
- 
+
     // Search for the key to be deleted, keep track of the
     // previous element as we need to change 'prev->next'
-    while (temp != NULL && temp->data != key) {
+    while (temp != NULL && temp->data != key)
+    {
         prev = temp;
         temp = temp->next;
     }
- 
+
     // If key was not present in linked list
     if (temp == NULL)
         return;
- 
+
     // Unlink the element from linked list
     prev->next = temp->next;
- 
+
     free(temp); // Free memory
 }
 //=============================================================================
@@ -139,7 +140,6 @@ void individual_station_query()
 int inputppl(int K)
 {
 
-    
     //people[N] = (struct person *)malloc(N * sizeof(struct person));
     //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
     for (int i = 1; i <= K; i++)
@@ -227,25 +227,24 @@ int stationsquery(struct tempstats stations[])
 //=============================================================================
 //To uniformanize the dates
 //=============================================================================
-void dateconstanter(int index,int station, int x, int y)
+void dateconstanter(int index, int station, int x, int y)
 {
-    for (int i = x-1; i < y; i++)
+    for (int i = x - 1; i < y; i++)
     {
-
-        people[index].dates[i]=station;
+        people[index].dates[i] = station;
         //printf("%d\n",people[index].dates[i]);
     }
 }
 //=============================================================================
 //takes person as input and his station and changes person and station statuses
 //=============================================================================
-void changestatuses(int person,int station)
+void changestatuses(int person, int station)
 {
-    if(/*stations[person].primary>0 &&*/ strcmp(people[person].string,s4)!=0)
+    if (/*stations[person].primary>0 &&*/ strcmp(people[person].string, s4) != 0)
     {
-        strcpy(people[person].string,s3);
+        strcpy(people[person].string, s3);
         stations[person].secondary++;
-        insertelement(&stations[person].root_secondary,person);
+        insertelement(&stations[person].root_secondary, person);
         //deleteelement()
     }
 }
@@ -255,14 +254,13 @@ void changestatuses(int person,int station)
 void traveller(int i)
 {
     struct person required_person = people[i];
-    int x, y,station;
+    int x, y, station;
     printf("Enter the dates and station and enter -1 -1 to terminate\n");
-    
     while (x != -1 && y != -1)
     {
-        scanf("%d %d %d", &x, &y,&station);
-        dateconstanter(i,station,x,y);
-        changestatuses(i,station);
+        scanf("%d %d %d", &x, &y, &station);
+        dateconstanter(i, station, x, y);
+        changestatuses(i, station);
     }
 }
 //=============================================================================
@@ -270,10 +268,8 @@ void traveller(int i)
 //=============================================================================
 void printer(int index)
 {
-    for(int i=0;i<15;i++)
-    {
-        printf("%d ",people[index].dates[i]);
-    }
+    for (int i = 0; i < 15; i++)
+        printf("%d ", people[index].dates[i]);
 }
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
