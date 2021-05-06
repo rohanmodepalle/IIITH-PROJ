@@ -250,17 +250,34 @@ void changestatuses(int person, int station)
 //=============================================================================
 //takes person as input and makes his travel iterinary
 //=============================================================================
-void traveller(int i)
+void traveller(int i,int pep)
 {
+    printf("Enter no. of ppl travelling on day %d",i+1);
+    int num;
+    scanf("%d",&num);
+    for(int j=0;j<num;j++)
+    {
+        printf("Enter index of person travelling: ");
+        int index;
+        scanf("%d",&index);
+        if(index<1 || index > pep)
+        {
+            printf("Enter valid person index");
+            j--;
+        }
     struct person required_person = people[i];
     int x, y, station;
-    printf("Enter the dates and station and enter -1 -1 to terminate\n");
-    while (x != -1 && y != -1)
+    printf("Enter station index %d is travelling to: ",index);
+    scanf("%d",&station);
+    if(i+1>14)
     {
-        scanf("%d %d %d", &x, &y, &station);
-        dateconstanter(i, station, x, y);
-        changestatuses(i, station);
+        for(x=0;x<14;x++)
+        people[index].dates[x] = people[index].dates[x+1];
+        people[index].dates[x] = station;
     }
+    else
+        people[index].dates[i]=station;
+    changestatuses(index, station);
 }
 //=============================================================================
 //Util function to print array to test
@@ -273,15 +290,24 @@ void printer(int index)
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
-// int main()
-// {
-//     int pep;
-//     printf("Enter Number of people\n");
-//     scanf("%d", &pep);
-//     //pep=1;
-//     inputppl(pep);
-//     int stat;
-//     //stationsquery(stations);
+ int main()
+ {
+     int pep;
+     printf("Enter Number of people\n");
+     scanf("%d", &pep);
+    pep=1;
+    inputppl(pep);
+     int stat;
+    stationsquery(stations);
+int days;
+printf("Enter number of days' data u want to track: ");
+scanf("%d",&days);
+for(int i=0;i<days;i++)
+{
+ traveller(i,pep);
+}
+int queries;
+ scanf("%d",&queries);
 //     //individual_person_query();
 //     //individual_station_query();
 //     //printf("Enter ")
@@ -289,4 +315,8 @@ void printer(int index)
 //     //traveller(0);
 //     individual_person_query();
 //     printer(0);
-// }
+}
+
+void menu()
+{
+}
