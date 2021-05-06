@@ -278,6 +278,7 @@ void traveller(int i,int pep)
     else
         people[index].dates[i]=station;
     changestatuses(index, station);
+    }
 }
 //=============================================================================
 //Util function to print array to test
