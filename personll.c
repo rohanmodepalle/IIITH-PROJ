@@ -139,7 +139,6 @@ void individual_station_query()
 //=============================================================================
 int inputppl(int K)
 {
-
     //people[N] = (struct person *)malloc(N * sizeof(struct person));
     //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
     for (int i = 1; i <= K; i++)
