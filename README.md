@@ -7,13 +7,22 @@ This is a project which is a scaled down version of contact tracing and applicat
 Just gitclone/Download the project repo and run using gcc
 
 ```bash
+git clone https://github.com/TheAthleticCoder/IIITH-PROJ
 gcc main.c
 ./a.out
 ```
+## Index
+
+### extra.c and extra.h
+Contain generic functions for implementations of linked lists ,stacks and queues which are used in subsequently.
+### graph.c and graph.h
+Contains functions for implementations of graphs and Dijkstra's and safety values concept which is crucial for solving part 2 of the question.
+### personll.c and personll.h
+Contains functions and structures for storing and querying data regarding people and stations.
 
 ## Usage
 
-```python
+```
 It Has somewhat of an interactive UI and hence the user needs to enter values when queried.
 ```
 
