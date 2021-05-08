@@ -417,10 +417,17 @@ void printtemp(int n,int arr[n])
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
 
-void menu()
+void menu(int z)
 {
     int x,y;
-    printf("Enter number of people travelling: ");
+    printf("Do u want to list of covid positive people ? (y/n)");
+    char ch;
+    scanf("%c",&ch);
+    if(ch=='Y' || ch=='y')
+    {
+        covidpos();
+    }
+    printf("Enter number of people travelling on day %d: ",z+1);
     scanf("%d",&x);
     //int arr[x];
     for(int i=0;i<x;i++)
@@ -429,6 +436,7 @@ void menu()
         scanf("%d",&y);
         changestations(y);
     }
+    decrementer();
 }
 
 int main()
@@ -445,7 +453,7 @@ int main()
     scanf("%d",&days);
     for(int i=0;i<days;i++)
     {
-        menu();
+        menu(i);
     }
     //stationsquery(stations);
     //individual_person_query();
