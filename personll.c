@@ -317,6 +317,7 @@ void changestations(int i)
     else
     {
         int x;
+        stations[person_use.source_station].index_arr[i]=0;
         printf("Enter Destination\n");
         scanf("%d",&x);
         person_use.source_station=x;
@@ -327,25 +328,106 @@ void changestations(int i)
                 person_use.arr[i]=14;
             }
         }
+        stations[person_use.source_station].index_arr[i]=1;
     }
+}
+int q1_primary[100];
+int q1_sec[100];
+void cleanarr()
+{
+    for (int i=0;i<100;i++)
+    {
+        q1_primary[i]=0;
+        q1_sec[i]=0;
+    }
+}
+void covidpos(int n,int arr[n])
+{
+    int z=0;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n; j++)
+        {
+            if(people[i].arr[arr[j]]>0)
+            {
+                q1_primary[z]=i;
+                z++;
+            }
+        }
+    }
+    z=0;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n; j++)
+        {
+            if(people[i].arr[q1_primary[j]]>0)
+            {
+                q1_sec[z]=i;
+                z++;
+            }
+        }
+    }
+}
+//=============================================================================
+//Util function for cleaning the arrays
+//=============================================================================
+void cleaner()
+{
+    for(int i=0;i<N; i++)
+    {
+        for(int j=0;j<N; j++)
+        {
+            stations[i].index_arr[j]=0;
+            people[i].arr[j]=0;
+        }
+    }
+}
+//=============================================================================
+//Util function for changing date /decrementing dates
+//=============================================================================
+void decrementer()
+{
+    for(int i=1;i<=N;i++)
+    {
+        for( int j=1;j<=N;j++)
+        {
+            people[i].arr[j]--;
+        }
+    }
+}
+//=============================================================================
+//Util function for printing lists in part 1
+//=============================================================================
+void printtemp(int n,int arr[n])
+{
+     for(int i=0;i<n;i++)
+     {
+         if(arr[i]!=0)
+         {
+             printf("%d ",i);
+         }
+     }
+     printf("\n");
 }
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
-// int main()
-// {
-//     int pep;
-//     printf("Enter Number of people\n");
-//     scanf("%d", &pep);
-//     //pep=1;
-//     inputppl(pep);
-//     int stat;
-//     //stationsquery(stations);
-//     //individual_person_query();
-//     //individual_station_query();
-//     //printf("Enter ")
-//     //traveller(1);
-//     //traveller(0);
-//     individual_person_query();
-//     printer(0);
-// }
+int main()
+{
+    int pep;
+    printf("Enter Number of people\n");
+    scanf("%d", &pep);
+    //pep=1;
+    inputppl(pep);
+    int stat;
+    cleaner();
+    cleanarr();
+    //stationsquery(stations);
+    //individual_person_query();
+    //individual_station_query();
+    //printf("Enter ")
+    //traveller(1);
+    //traveller(0);
+    individual_person_query();
+    printer(0);
+}
