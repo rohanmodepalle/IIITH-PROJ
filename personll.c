@@ -416,9 +416,24 @@ void printtemp(int n,int arr[n])
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
+
+void menu()
+{
+    int x,y;
+    printf("Enter number of people travelling: ");
+    scanf("%d",&x);
+    //int arr[x];
+    for(int i=0;i<x;i++)
+    {
+        printf("Enter index of person travelling: ");
+        scanf("%d",&y);
+        changestations(y);
+    }
+}
+
 int main()
 {
-    int pep;
+    int pep,days;
     printf("Enter Number of people\n");
     scanf("%d", &pep);
     //pep=1;
@@ -426,6 +441,12 @@ int main()
     int stat;
     cleaner();
     cleanarr();
+    printf("How many days do you want to track?: ");
+    scanf("%d",&days);
+    for(int i=0;i<days;i++)
+    {
+        menu();
+    }
     //stationsquery(stations);
     //individual_person_query();
     //individual_station_query();
