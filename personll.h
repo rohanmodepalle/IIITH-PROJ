@@ -21,12 +21,12 @@ struct person {
     int date;
     char string[10];
     int source_station;
-    int qdays;
     //=============================================================================
     //this is the structure for storing various details of the people travel itenary
     //=============================================================================
-    int dates[15];
-    char destination;
+    int dates;
+    int arr[100];
+    int destination;
 };
 //=============================================================================
 //this is a structure for stroing the various information regarding the stations
@@ -35,7 +35,8 @@ struct tempstats{
     int positive;
     int primary;
     int secondary;
-    int dates[15];
+    //struct element *total;
+    int index_arr[100];
     struct element* root_positive;
     struct element* root_primary;
     struct element* root_secondary;
