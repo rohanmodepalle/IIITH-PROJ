@@ -13,11 +13,11 @@ gcc main.c
 ```
 ## Index
 
-### extra.c and extra.h
+### 1.extra.c and extra.h
 Contain generic functions for implementations of linked lists ,stacks and queues which are used in subsequently.
-### graph.c and graph.h
+### 2.graph.c and graph.h
 Contains functions for implementations of graphs and Dijkstra's and safety values concept which is crucial for solving part 2 of the question.
-### personll.c and personll.h
+### 3.personll.c and personll.h
 Contains functions and structures for storing and querying data regarding people and stations.
 
 ## Usage
@@ -27,7 +27,7 @@ It Has somewhat of an interactive UI and hence the user needs to enter values wh
 ```
 
 ## Contributing
-This has been made solely by 3 people @TheAthleticCoder ,@harsha20032020 and @rohanmodepalli.
+This has been made solely by 3 people [I'm an inline-style link with title](https://github.com/TheAthleticCoder "Harshit Gupta") ,@harsha20032020 and @rohanmodepalli.
 Although this is a course project , any ways to optimize the code and algorithms/data structures used in the program are welcomed for a discussion and maybe you can create a pull request.
 
 ## License
