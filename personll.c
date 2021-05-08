@@ -30,6 +30,20 @@ struct element *createelement(int x)
     return temp;
 }
 //=============================================================================
+//prints the array
+//=============================================================================
+void printarray(int *arr)
+{
+    for(int i=1;i<=N;i++)
+    {
+        if(arr[i]>0)
+        {
+            printf("%d ",i);
+        }
+    }
+    printf("\n");
+}
+//=============================================================================
 //linked lists insertion function......used root element replacement to trim time complexity
 //=============================================================================
 void insertelement(struct element **head_ref, int new_data)
@@ -211,20 +225,7 @@ void individual_person_query()
     printf("Station=%d\nCondition=%s\nDate=%d\n", people[x].source_station, people[x].string, people[x].date);
     printf("\n\n\n");
 }
-//=============================================================================
-//prints the array
-//=============================================================================
-void printarray(int *arr)
-{
-    for(int i=1;i<=N;i++)
-    {
-        if(arr[i]>0)
-        {
-            printf("%d ",i);
-        }
-    }
-    printf("\n");
-}
+
 //=============================================================================
 //prints the situation of all the stations till the given input
 //=============================================================================
@@ -279,7 +280,7 @@ void changestatuses(int person, int station)
 //=============================================================================
 //takes person as input and makes his travel iterinary
 //=============================================================================
-void traveller(int i)
+/*void traveller(int i)
 {
     struct person required_person = people[i];
     int x, y, station;
@@ -292,7 +293,7 @@ void traveller(int i)
         changestatuses(i, station);
         //inserte
     }
-}
+}*/
 // void covidpostiveafterdate()
 // {
 
@@ -358,6 +359,7 @@ void covidpos(int n,int arr[n])
             }
         }
     }
+    printarray(&q1_primary);
     z=0;
     for(int i=0;i<n;i++)
     {
@@ -370,6 +372,7 @@ void covidpos(int n,int arr[n])
             }
         }
     }
+    printarray(&q1_sec);
     for(int i=0;i<n;i++)
     {
         people[arr[i]].dates=14;
@@ -425,7 +428,7 @@ void menu(int z)
     int x,y;
     printf("Do u want to list of covid positive people ? (y/n)");
     char ch;
-    scanf("%c",&ch);
+    scanf(" %c",&ch);
     if(ch=='Y' || ch=='y')
     {
         covidpos(L,q1_positive);
@@ -465,5 +468,5 @@ int main()
     //traveller(1);
     //traveller(0);
     individual_person_query();
-    printer(0);
+    //printer(0);
 }
