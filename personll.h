@@ -34,6 +34,7 @@ struct tempstats{
     int positive;
     int primary;
     int secondary;
+    struct element *total;
     struct element* root_positive;
     struct element* root_primary;
     struct element* root_secondary;
