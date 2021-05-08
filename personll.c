@@ -11,6 +11,8 @@ char s1[] = "Neutral";
 char s4[] = "Positive";
 char s2[] = "Primary";
 char s3[] = "Secondary";
+int q1_positive[N];
+int L;
 //=============================================================================
 //Author::N Harsha Vardhan
 //Dated:: 26th Apr 2021
@@ -153,7 +155,7 @@ int inputppl(int K)
         strcpy(people[i].string, s1);
         //stations[]
     }
-    int L;
+    
     printf("Enter the Number of covid positive people\n");
     scanf("%d", &L);
     //l=covid positive ppl;
@@ -163,6 +165,7 @@ int inputppl(int K)
         printf("Enter the index of the positive person \n");
         scanf("%d", &x);
         strcpy(people[x].string, s4);
+        q1_positive[i]=x;
         stations[people[x].source_station].positive++;
         insertelement(&stations[people[x].source_station].root_positive, x);
         //insertelement(&stations[people[x].source_station].total, x);
@@ -425,7 +428,7 @@ void menu(int z)
     scanf("%c",&ch);
     if(ch=='Y' || ch=='y')
     {
-        covidpos();
+        covidpos(L,q1_positive);
     }
     printf("Enter number of people travelling on day %d: ",z+1);
     scanf("%d",&x);
