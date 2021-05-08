@@ -126,7 +126,8 @@ void individual_station_query()
     printf("Station Number: %d\n", x);
     printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n", stations[x].positive, stations[x].primary, stations[x].secondary);
     printf("The indexes of total people in the station are\n");
-    printlist(stations[x].total);
+    //printlist(stations[x].total);
+    printarray(stations[x].index_arr);
     printf("The indexes of Positive people are\n");
     printlist(stations[x].root_positive);
     //printf("\n");
@@ -164,7 +165,7 @@ int inputppl(int K)
         strcpy(people[x].string, s4);
         stations[people[x].source_station].positive++;
         insertelement(&stations[people[x].source_station].root_positive, x);
-        insertelement(&stations[people[x].source_station].total, x);
+        //insertelement(&stations[people[x].source_station].total, x);
     }
     for (int i = 1; i <= K; i++)
     {
@@ -173,14 +174,14 @@ int inputppl(int K)
             stations[people[i].source_station].primary++;
             strcpy(people[i].string, s2);
             insertelement(&stations[people[i].source_station].root_primary, i);
-            insertelement(&stations[people[i].source_station].total, i);
+            //insertelement(&stations[people[i].source_station].total, i);
         }
         else if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive != 0) && (strcmp(people[i].string, s4) != 0))
         {
             stations[people[i].source_station].secondary++;
             strcpy(people[i].string, s3);
             insertelement(&stations[people[i].source_station].root_secondary, i);
-            insertelement(&stations[people[i].source_station].total, i);
+            //insertelement(&stations[people[i].source_station].total, i);
         }
     }
 }
@@ -208,6 +209,20 @@ void individual_person_query()
     printf("\n\n\n");
 }
 //=============================================================================
+//prints the array
+//=============================================================================
+void printarray(int *arr)
+{
+    for(int i=1;i<=N;i++)
+    {
+        if(arr[i]>0)
+        {
+            printf("%d ",i);
+        }
+    }
+    printf("\n");
+}
+//=============================================================================
 //prints the situation of all the stations till the given input
 //=============================================================================
 int stationsquery(struct tempstats stations[])
@@ -220,7 +235,8 @@ int stationsquery(struct tempstats stations[])
         printf("Station Number: %d\n", i);
         printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n", stations[i].positive, stations[i].primary, stations[i].secondary);
         printf("The indexes of total people in the station are\n");
-        printlist(stations[i].total);
+        //printlist(stations[i].total);
+        printarray(stations[i].index_arr);
         printf("The indexes of Positive people are\n");
         printlist(stations[i].root_positive);
         //printf("\n");
@@ -235,15 +251,15 @@ int stationsquery(struct tempstats stations[])
 //=============================================================================
 //To uniformanize the dates
 //=============================================================================
-void dateconstanter(int index, int station, int x, int y)
-{
-    for (int i = x - 1; i < y; i++)
-    {
+// void dateconstanter(int index, int station, int x, int y)
+// {
+//     for (int i = x - 1; i < y; i++)
+//     {
 
-        people[index].dates[i] = station;
-        //printf("%d\n",people[index].dates[i]);
-    }
-}
+//         people[index].dates[i] = station;
+//         //printf("%d\n",people[index].dates[i]);
+//     }
+// }
 //=============================================================================
 //takes person as input and his station and changes person and station statuses
 //=============================================================================
@@ -271,16 +287,46 @@ void traveller(int i)
         scanf("%d %d %d", &x, &y, &station);
         dateconstanter(i, station, x, y);
         changestatuses(i, station);
+        //inserte
     }
 }
+// void covidpostiveafterdate()
+// {
+
+// }
 //=============================================================================
 //Util function to print array to test
 //=============================================================================
-void printer(int index)
+// void printer(int index)
+// {
+//     for (int i = 0; i < 15; i++)
+//     {
+//         printf("%d ", people[index].dates[i]);
+//     }
+// }
+//=============================================================================
+//Util function for travelling
+//=============================================================================
+void changestations(int i)
 {
-    for (int i = 0; i < 15; i++)
+    struct person person_use = people[i];
+    if(strcmp(person_use.string,s4)==0||(person_use.dates>0))
     {
-        printf("%d ", people[index].dates[i]);
+        printf("Invalid Person, Person is quarantined or positive, Cannot travel\n");
+    }
+    else
+    {
+        int x;
+        printf("Enter Destination\n");
+        scanf("%d",&x);
+        person_use.source_station=x;
+        for(int i= 1; i <= N; i++)
+        {
+            if(stations[x].index_arr[i]>0)
+            {
+                person_use.arr[i]=14;
+            }
+        }
     }
 }
 //=============================================================================
