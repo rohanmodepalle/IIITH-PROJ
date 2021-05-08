@@ -1,29 +1,25 @@
-# Foobar
+# COVID TRACING PROJECT
 
-Foobar is a Python library for dealing with word pluralization.
+This is a project which is a scaled down version of contact tracing and application of graphs in real life.This project has been made entirely in C and can basically perform certain queries regarding conditions of people when given a list of infected people and also can give the most safest path that should be taken in order to minimize chances of contracting the Virus.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Just gitclone/Download the project repo and run using gcc
 
 ```bash
-pip install foobar
+gcc main.c
+./a.out
 ```
 
 ## Usage
 
 ```python
-import foobar
-
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
+It Has somewhat of an interactive UI and hence the user needs to enter values when queried.
 ```
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+This has been made solely by 3 people @TheAthleticCoder ,@harsha20032020 and @rohanmodepalli.
+Although this is a course project , any ways to optimize the code and algorithms/data structures used in the program are welcomed for a discussion and maybe you can create a pull request.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
