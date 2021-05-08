@@ -310,7 +310,7 @@ void traveller(int i)
 void changestations(int i)
 {
     struct person person_use = people[i];
-    if(strcmp(person_use.string,s4)==0||(person_use.dates>0))
+    if((person_use.dates>0))
     {
         printf("Invalid Person, Person is quarantined or positive, Cannot travel\n");
     }
@@ -366,6 +366,10 @@ void covidpos(int n,int arr[n])
                 z++;
             }
         }
+    }
+    for(int i=0;i<n;i++)
+    {
+        people[arr[i]].dates=14;
     }
 }
 //=============================================================================
