@@ -4,8 +4,8 @@
 typedef struct graph Graph;
 typedef struct vertex Vertex;
 typedef struct edge Edge;
-#include "extra.c"
 
+#include "extra.h"
 //u can write variable struct names in caps or smalls based on your comfort
 
 //creates graph from vertices, n starts from 0 and iterates till maxn 
@@ -56,6 +56,7 @@ void graph_add_d_edge(Graph* graph, int u, int v, int w);
 
 
 //TRAVERSALS
+//in detail explanation is given in the graph.c file
 void value_store(Path *paths,Graph* graph, int destination_id, int id, bool is_source,
               List* stack,List* curr_dist,List* distances,bool visited[]);
 void value_get(Graph* graph, int destination_id, int id, bool is_source,
@@ -67,6 +68,5 @@ int distance_sum(List* curr_distance);
 void all_paths(Graph* graph,int source_id,int destination_id);
 float safety_value(int n,int arr[n]);
 int cmpfunc(const void *a, const void *b);
-//void sorter(Path *paths,int m);
 
 #endif

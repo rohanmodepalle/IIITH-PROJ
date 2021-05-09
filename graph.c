@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "graph.h"
-#include "personll.c"
+#include "personll.h"
 
 //GLOBAL VARIABLE ITERATORS TO REDUCE PARAMETERS IN FUNCTIONS
 int itr;
@@ -34,6 +34,14 @@ Vertex *new_vertex(const char *label, int id)
 }
 // create a new w-weighted edge from vertex id u to vertex id v
 //the weight is road_length here
+void graph_add_vertex(Graph* graph, const char* name) {
+	if (graph->n < graph->maxn) {
+		graph->vertices[graph->n] = new_vertex(name,graph->n);
+		graph->n++;
+	} else {
+		printf("adding new vertex to full graph\n");
+	}
+}
 Edge *new_edge(int u, int v, int w)
 {
     Edge *edge = malloc(sizeof(*edge));
@@ -46,6 +54,8 @@ Edge *new_edge(int u, int v, int w)
 
     return edge;
 }
+
+//this is the comparator function for using 'QSORT' to find out the most suitable paths
 int cmpfunc(const void *a, const void *b)
 {
     Path *path1 = (Path *)a;
@@ -54,7 +64,7 @@ int cmpfunc(const void *a, const void *b)
     {
         return path1->road_len - path2->road_len;
     }
-    else if (path1->safety_val < path2->safety_val)
+    else if (path1->safety_val > path2->safety_val)
     {
         return -1;
     }
@@ -143,12 +153,6 @@ void graph_add_d_edge(Graph *graph, int u, int v, int w)
     }
 }
 
-/**************************************************/
-/**************************************************/
-//                   TRAVERSE                     //
-/**************************************************/
-/**************************************************/
-
 //false_array creates a boolean array which checks if vertex is visited or not
 //we need this function for DFS
 void false_array(Graph *graph, bool array[])
@@ -194,14 +198,24 @@ void all_paths(Graph *graph, int source_id, int destination_id)
 
     qsort(paths, m,sizeof(Path),cmpfunc);
 
+    //We need to print the 3 most suitable paths 
+    int final_m = 0;
+    if(m>3){
+        final_m = 3;
+    }
+    else{
+        final_m = m;
+    }
+
     //THIS PRINTS ALL PATHS AFTER PERFORMING ALL THE DESIRED OPERATIONS
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < final_m; i++)
     {
-        printf("%d ", (paths + i)->road_len);
-        printf("%f ", (paths + i)->safety_val);
+        printf("Road Length: %d ", (paths + i)->road_len);
+        printf("\t Safety value: %f ", (paths + i)->safety_val);
+        printf("\t Path: ");
         for (int j = 0; j < (paths + i)->size; j++)
         {
-            printf("%d ", (paths + i)->arr[j]);
+            printf("%d ", ((paths + i)->arr[j])+1);
         }
         printf("\n");
     }
@@ -211,31 +225,6 @@ void all_paths(Graph *graph, int source_id, int destination_id)
     free_stack(curr_dist);
     free_queue(distances);
 }
-
-//This function uses BUBBLE SORT to sort based on safety value sand then road length
-// void sorter(Path *paths,int m){
-//     int outer, inner;
-//     Path temp; //we create temporary path of size 1 to enable swapping of structs based on priority order
-//     for(outer=0;outer<m;outer++)
-//     {
-//         for(inner=outer+1;inner<m;inner++)
-
-//             if(paths[outer].safety_val>paths[inner].safety_val)
-//             {
-//             temp=paths[outer];
-//             paths[outer]=paths[inner];
-//             paths[inner]=temp;
-//             }
-//             else if(paths[outer].safety_val==paths[inner].safety_val){
-//                 if(paths[outer].road_len>paths[inner].road_len){ //safety values are equal, then equate road lengths
-//                     temp=paths[outer];
-//                     paths[outer]=paths[inner];
-//                     paths[inner]=temp;
-//                 }
-//             }
-//         }
-// }
-
 
 // Finds a simple path from id to destination_id using depth first search
 // This stores the total number of paths so that we can store all values in the next function
@@ -393,7 +382,7 @@ float safety_value(int n, int arr[n])
     float danger_val = 0;
     for (int i = 0; i < n; i++)
     {
-        danger_val += (stations[arr[i]].positive) + (stations[arr[i]].primary / 5) + (stations[arr[i]].secondary / 10);
+        danger_val += (stations[arr[i]+1].positive) + (stations[arr[i]+1].primary / 5) + (stations[arr[i]+1].secondary / 10);
     } //we use the formula provided to calculate the danger value from stations structure since it contains required parameters
     //we generate afety values in range {0,1}
     if (danger_val == 0)
@@ -405,116 +394,3 @@ float safety_value(int n, int arr[n])
         return (1 / danger_val); //inversely proportional
     }
 }
-
-//no use for now
-
-// Prints the path stored in the stack
-// void stack_print(List* stack, Graph* graph, bool print_dist,
-//                  int total_distance) {
-//     int x;
-//     List* tempstack=new_stack();
-//     while (!stack_is_empty(stack))
-//         stack_push(tempstack, stack_pop(stack));
-
-//     while (stack_size(tempstack)>0) {
-//         x = stack_pop(tempstack);
-//         stack_push(stack, x);
-//         printf("%d ", x);
-//     }
-//     free_stack(tempstack);
-// }
-// void stack_print(List* stack, Graph* graph, bool print_dist,
-//                  int total_distance) {
-//     int x;
-//     List* tempstack=new_stack();
-//     while (!stack_is_empty(stack))
-//         stack_push(tempstack, stack_pop(stack));
-
-//     while (stack_size(tempstack)>1) {
-//         x = stack_pop(tempstack);
-//         stack_push(stack, x);
-//         printf("%s, ", graph->vertices[x]->label);
-//     }
-
-//     x = stack_pop(tempstack);
-//     if (print_dist)
-//         printf("%s (%dkm)\n", graph->vertices[x]->label, total_distance);
-//     else
-//         printf("%s\n", graph->vertices[x]->label);
-//     stack_push(stack, x);
-
-//     free_stack(tempstack);
-// }
-
-// int** tall_paths(Graph* graph, int source_id, int destination_id) {
-
-//     // Create zeroed visited array
-//     bool visited[graph->n];
-//     false_array(graph, visited);
-//     //global variable now has a stack to accept values
-//     global=new_stack();
-//     // Create a stack
-//     List* stack=new_stack();
-//     List* curr_dist=new_stack();
-//     List* distances=new_queue();
-//     value_get(graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
-
-//     int m = queue_size(distances);
-//     int n = ((graph->maxn)+3);
-//     row = m;
-//     column = n;
-//     int **arr;
-//     arr = malloc(sizeof(int*) *m);
-//     for(int i = 0;i<m;i++){
-//         arr[i] = malloc(sizeof(int*) *n);
-//     }
-//     for(int i = 0;i<m;i++){
-//         for(int j =0;j<n;j++){
-//             arr[i][j] = -1;
-//         }
-//     }
-//     //value_store(paths,graph, destination_id, source_id, true, stack,curr_dist,distances, visited);
-
-//     //NOTE: GLOBAL STACK HAS FORMAT: (-2,dist,path)*m (m->paths)
-
-//     //assert((stack_pop(global))==-2);
-//     //To ensure that top of stack has element -2
-//     int x =0,p=0,q=1;
-//     List* tempstack=new_stack();
-//     while (!stack_is_empty(global))
-//         stack_push(tempstack, stack_pop(global));
-//     while(stack_size(tempstack)>0){
-//         if(x==-2){
-//             p++;
-//             q=1;
-//         }
-//         x = stack_pop(tempstack);
-//         arr[p][q]=x;
-//         q++;
-//     }
-//     float valarr[2][m];
-//     float dangerval=0;
-//     for(int i = 0;i<m;i++){
-//         for(int j = 2;j<n;j++ ){
-//             //dangerval = stations[arr[i][j]].positive+(stations[arr[i][j]].primary)/5+(stations[arr[i][j]].secondary)/10;
-//         }
-//     }
-//     free_stack(tempstack);
-//     free_stack(global);
-//     free_stack(stack);
-//     free_stack(curr_dist);
-//     free_queue(distances);
-//     return arr;
-// }
-
-/////////////////////////////////////////////////////////////////
-// add a new vertex with label 'name' to a graph
-// void graph_add_vertex(Graph* graph, const char* name) {
-// 	if (graph->n < graph->maxn) {
-// 		graph->vertices[graph->n] = new_vertex(name,graph->n);
-// 		graph->n++;
-// 	} else {
-// 		printf("adding new vertex to full graph\n");
-// 	}
-// }
-////////////////////////////////////////////////////////////////
