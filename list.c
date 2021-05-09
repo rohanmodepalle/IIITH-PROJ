@@ -90,7 +90,6 @@ void pehlaque(List *positive_list)
         }
     }
 }
-//          0  1 2  3  4
 // s_list 1= [2 3 -1 -1 -1]
 // s_list 2= [3 3 4 4 -1]
 
