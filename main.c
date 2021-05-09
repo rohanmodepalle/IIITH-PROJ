@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include<stdlib.h>
+#include<malloc.h>
 //#include "graph.h"
 #include "graph.c"
 #include "list.c"
