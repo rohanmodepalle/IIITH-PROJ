@@ -93,7 +93,7 @@ void pehlaque(List *positive_list)
 // s_list 1= [2 3 -1 -1 -1]
 // s_list 2= [3 3 4 4 -1]
 
-// query ask, if any person move??
+// query ask, if any person move
 void movement(int Day, int perid, int Destination)
 {
     people[perid].s_list[Day] = Destination;
