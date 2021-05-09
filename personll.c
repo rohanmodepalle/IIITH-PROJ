@@ -4,15 +4,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include "personll.h"
-#define N 100
-struct person people[N];
-struct tempstats stations[N];
+
+
 char s1[] = "Neutral";
 char s4[] = "Positive";
 char s2[] = "Primary";
 char s3[] = "Secondary";
-int q1_positive[N];
-int L;
+
 //=============================================================================
 //Author::N Harsha Vardhan
 //Dated:: 26th Apr 2021
@@ -28,20 +26,6 @@ struct element *createelement(int x)
     temp->next = NULL;
 
     return temp;
-}
-//=============================================================================
-//prints the array
-//=============================================================================
-void printarray(int *arr)
-{
-    for(int i=1;i<=N;i++)
-    {
-        if(arr[i]>0)
-        {
-            printf("%d ",i);
-        }
-    }
-    printf("\n");
 }
 //=============================================================================
 //linked lists insertion function......used root element replacement to trim time complexity
@@ -62,34 +46,32 @@ void insertelement(struct element **head_ref, int new_data)
 }
 //=============================================================================
 //linked lists deletion function......
-void deleteelement(struct element **head_ref, int key)
+void deleteelement(struct element** head_ref, int key)
 {
     // Store head element
     struct element *temp = *head_ref, *prev;
-
+ 
     // If head element itself holds the key to be deleted
-    if (temp != NULL && temp->data == key)
-    {
+    if (temp != NULL && temp->data == key) {
         *head_ref = temp->next; // Changed head
-        free(temp);             // free old head
+        free(temp); // free old head
         return;
     }
-
+ 
     // Search for the key to be deleted, keep track of the
     // previous element as we need to change 'prev->next'
-    while (temp != NULL && temp->data != key)
-    {
+    while (temp != NULL && temp->data != key) {
         prev = temp;
         temp = temp->next;
     }
-
+ 
     // If key was not present in linked list
     if (temp == NULL)
         return;
-
+ 
     // Unlink the element from linked list
     prev->next = temp->next;
-
+ 
     free(temp); // Free memory
 }
 //=============================================================================
@@ -128,22 +110,19 @@ int printlist(struct element *root)
         }
         printf("\n");
     }
-    printf("\n\n\n\n");
+    //printf("\n\n\n\n");
     return 0;
 }
 //=============================================================================
 //function which individually queries the station that we provide
 //=============================================================================
-void individual_station_query()
+void individual_station_query(int x)
 {
-    int x;
-    printf("Enter The Station To Query\n");
-    scanf("%d", &x);
-    printf("Station Number: %d\n", x);
+    //int x;
+    //printf("Enter The Station To Query\n");
+    //scanf("%d", &x);
+    //printf("Station Number: %d\n", x);
     printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n", stations[x].positive, stations[x].primary, stations[x].secondary);
-    printf("The indexes of total people in the station are\n");
-    //printlist(stations[x].total);
-    printarray(stations[x].index_arr);
     printf("The indexes of Positive people are\n");
     printlist(stations[x].root_positive);
     //printf("\n");
@@ -160,47 +139,50 @@ void individual_station_query()
 int inputppl(int K)
 {
 
+    
     //people[N] = (struct person *)malloc(N * sizeof(struct person));
     //stations[N] = (struct tempstats *)malloc(N * sizeof(struct tempstats));
     for (int i = 1; i <= K; i++)
     {
         printf("Enter the source station of %d\n", i);
         scanf("%d", &people[i].source_station);
+        people[i].date = -1;
+        //NOTE: Its for number of days = 60
+        for(int j =0;j<60;j++){
+            people[i].s_list[j] = -1;
+        }
+        people[i].s_list[0] = people[i].source_station;
         strcpy(people[i].string, s1);
         //stations[]
     }
-    
-    printf("Enter the Number of covid positive people\n");
-    scanf("%d", &L);
+    // int L;
+    // printf("Enter the Number of covid positive people\n");
+    // scanf("%d", &L);
     //l=covid positive ppl;
-    for (int i = 1; i <= L; i++)
-    {
-        int x;
-        printf("Enter the index of the positive person \n");
-        scanf("%d", &x);
-        strcpy(people[x].string, s4);
-        q1_positive[i]=x;
-        stations[people[x].source_station].positive++;
-        insertelement(&stations[people[x].source_station].root_positive, x);
-        //insertelement(&stations[people[x].source_station].total, x);
-    }
-    for (int i = 1; i <= K; i++)
-    {
-        if ((stations[people[i].source_station].positive) > 0 && (strcmp(people[i].string, s4) != 0))
-        {
-            stations[people[i].source_station].primary++;
-            strcpy(people[i].string, s2);
-            insertelement(&stations[people[i].source_station].root_primary, i);
-            //insertelement(&stations[people[i].source_station].total, i);
-        }
-        else if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive != 0) && (strcmp(people[i].string, s4) != 0))
-        {
-            stations[people[i].source_station].secondary++;
-            strcpy(people[i].string, s3);
-            insertelement(&stations[people[i].source_station].root_secondary, i);
-            //insertelement(&stations[people[i].source_station].total, i);
-        }
-    }
+    // for (int i = 1; i <= L; i++)
+    // {
+    //     int x;
+    //     printf("Enter the index of the positive person \n");
+    //     scanf("%d", &x);
+    //     strcpy(people[x].string, s4);
+    //     stations[people[x].source_station].positive++;
+    //     insertelement(&stations[people[x].source_station].root_positive, x);
+    // }
+    // for (int i = 1; i <= K; i++)
+    // {
+    //     if ((stations[people[i].source_station].positive) > 0 && (strcmp(people[i].string, s4) != 0))
+    //     {
+    //         stations[people[i].source_station].primary++;
+    //         strcpy(people[i].string, s2);
+    //         insertelement(&stations[people[i].source_station].root_primary, i);
+    //     }
+    //     else if ((stations[people[i].source_station].primary) > 0 && (stations[people[i].source_station].positive != 0) && (strcmp(people[i].string, s4) != 0))
+    //     {
+    //         stations[people[i].source_station].secondary++;
+    //         strcpy(people[i].string, s3);
+    //         insertelement(&stations[people[i].source_station].root_secondary, i);
+    //     }
+    // }
 }
 //=============================================================================
 //incomplete function
@@ -222,10 +204,17 @@ void individual_person_query()
     int x;
     printf("Enter The Person's Index You Want to Query\n");
     scanf("%d", &x);
-    printf("Station=%d\nCondition=%s\nDate=%d\n", people[x].source_station, people[x].string, people[x].date);
+    printf("Station=%d\nCondition=%s\n", people[x].source_station, people[x].string);
+    if(people[x].date>0)
+    {
+        printf("Date=%d\n", people[x].date);
+    }
+    else
+    {
+        printf("Date=0\n");
+    }
     printf("\n\n\n");
 }
-
 //=============================================================================
 //prints the situation of all the stations till the given input
 //=============================================================================
@@ -238,9 +227,6 @@ int stationsquery(struct tempstats stations[])
     {
         printf("Station Number: %d\n", i);
         printf("Positive people=%d\tPrimary People=%d\tSecondary People=%d\n", stations[i].positive, stations[i].primary, stations[i].secondary);
-        printf("The indexes of total people in the station are\n");
-        //printlist(stations[i].total);
-        printarray(stations[i].index_arr);
         printf("The indexes of Positive people are\n");
         printlist(stations[i].root_positive);
         //printf("\n");
@@ -255,218 +241,71 @@ int stationsquery(struct tempstats stations[])
 //=============================================================================
 //To uniformanize the dates
 //=============================================================================
-// void dateconstanter(int index, int station, int x, int y)
-// {
-//     for (int i = x - 1; i < y; i++)
-//     {
+void dateconstanter(int index,int station, int x, int y)
+{
+    for (int i = x-1; i < y; i++)
+    {
 
-//         people[index].dates[i] = station;
-//         //printf("%d\n",people[index].dates[i]);
-//     }
-// }
+        people[index].dates[i]=station;
+        //printf("%d\n",people[index].dates[i]);
+    }
+}
 //=============================================================================
 //takes person as input and his station and changes person and station statuses
 //=============================================================================
-void changestatuses(int person, int station)
+void changestatuses(int person,int station)
 {
-    if (/*stations[person].primary>0 &&*/ strcmp(people[person].string, s4) != 0)
+    if(/*stations[person].primary>0 &&*/ strcmp(people[person].string,s4)!=0)
     {
-        strcpy(people[person].string, s3);
+        strcpy(people[person].string,s3);
         stations[person].secondary++;
-        insertelement(&stations[person].root_secondary, person);
+        insertelement(&stations[person].root_secondary,person);
         //deleteelement()
     }
 }
 //=============================================================================
 //takes person as input and makes his travel iterinary
 //=============================================================================
-/*void traveller(int i)
+void traveller(int i)
 {
     struct person required_person = people[i];
-    int x, y, station;
+    int x, y,station;
     printf("Enter the dates and station and enter -1 -1 to terminate\n");
-
+    
     while (x != -1 && y != -1)
     {
-        scanf("%d %d %d", &x, &y, &station);
-        dateconstanter(i, station, x, y);
-        changestatuses(i, station);
-        //inserte
+        scanf("%d %d %d", &x, &y,&station);
+        dateconstanter(i,station,x,y);
+        changestatuses(i,station);
     }
-}*/
-// void covidpostiveafterdate()
-// {
-
-// }
+}
 //=============================================================================
 //Util function to print array to test
 //=============================================================================
-// void printer(int index)
-// {
-//     for (int i = 0; i < 15; i++)
-//     {
-//         printf("%d ", people[index].dates[i]);
-//     }
-// }
-//=============================================================================
-//Util function for travelling
-//=============================================================================
-void changestations(int i)
+void printer(int index)
 {
-    struct person person_use = people[i];
-    if((person_use.dates>0))
+    for(int i=0;i<15;i++)
     {
-        printf("Invalid Person, Person is quarantined or positive, Cannot travel\n");
+        printf("%d ",people[index].dates[i]);
     }
-    else
-    {
-        int x;
-        stations[person_use.source_station].index_arr[i]=0;
-        printf("Enter Destination\n");
-        scanf("%d",&x);
-        person_use.source_station=x;
-        for(int i= 1; i <= N; i++)
-        {
-            if(stations[x].index_arr[i]>0)
-            {
-                person_use.arr[i]=14;
-            }
-        }
-        stations[person_use.source_station].index_arr[i]=1;
-    }
-}
-int q1_primary[100];
-int q1_sec[100];
-void cleanarr()
-{
-    for (int i=0;i<100;i++)
-    {
-        q1_primary[i]=0;
-        q1_sec[i]=0;
-    }
-}
-void covidpos(int n,int arr[n])
-{
-    int z=0;
-    for(int i=0;i<n;i++)
-    {
-        for(int j=0;j<n; j++)
-        {
-            if(people[i].arr[arr[j]]>0)
-            {
-                q1_primary[z]=i;
-                z++;
-            }
-        }
-    }
-    printarray(&q1_primary);
-    z=0;
-    for(int i=0;i<n;i++)
-    {
-        for(int j=0;j<n; j++)
-        {
-            if(people[i].arr[q1_primary[j]]>0)
-            {
-                q1_sec[z]=i;
-                z++;
-            }
-        }
-    }
-    printarray(&q1_sec);
-    for(int i=0;i<n;i++)
-    {
-        people[arr[i]].dates=14;
-    }
-}
-//=============================================================================
-//Util function for cleaning the arrays
-//=============================================================================
-void cleaner()
-{
-    for(int i=0;i<N; i++)
-    {
-        for(int j=0;j<N; j++)
-        {
-            stations[i].index_arr[j]=0;
-            people[i].arr[j]=0;
-        }
-    }
-}
-//=============================================================================
-//Util function for changing date /decrementing dates
-//=============================================================================
-void decrementer()
-{
-    for(int i=1;i<=N;i++)
-    {
-        for( int j=1;j<=N;j++)
-        {
-            people[i].arr[j]--;
-        }
-    }
-}
-//=============================================================================
-//Util function for printing lists in part 1
-//=============================================================================
-void printtemp(int n,int arr[n])
-{
-     for(int i=0;i<n;i++)
-     {
-         if(arr[i]!=0)
-         {
-             printf("%d ",i);
-         }
-     }
-     printf("\n");
 }
 //=============================================================================
 //main function to test the implementation....there is no interference with the actual peice of code ie the graphs implementation
 //=============================================================================
-
-void menu(int z)
-{
-    int x,y;
-    printf("Do u want to list of covid positive people ? (y/n)");
-    char ch;
-    scanf(" %c",&ch);
-    if(ch=='Y' || ch=='y')
-    {
-        covidpos(L,q1_positive);
-    }
-    printf("Enter number of people travelling on day %d: ",z+1);
-    scanf("%d",&x);
-    //int arr[x];
-    for(int i=0;i<x;i++)
-    {
-        printf("Enter index of person travelling: ");
-        scanf("%d",&y);
-        changestations(y);
-    }
-    decrementer();
-}
-
-int main()
-{
-    int pep,days;
-    printf("Enter Number of people\n");
-    scanf("%d", &pep);
-    //pep=1;
-    inputppl(pep);
-    int stat;
-    cleaner();
-    cleanarr();
-    printf("How many days do you want to track?: ");
-    scanf("%d",&days);
-    for(int i=0;i<days;i++)
-    {
-        menu(i);
-    }
-    //stationsquery(stations);
-    //individual_person_query();
-    //individual_station_query();
-    //printf("Enter ")
-    //traveller(1);
-    //traveller(0);
-    individual_person_query();
-    //printer(0);
-}
+// int main()
+// {
+//     int pep;
+//     printf("Enter Number of people\n");
+//     scanf("%d", &pep);
+//     //pep=1;
+//     inputppl(pep);
+//     int stat;
+//     //stationsquery(stations);
+//     //individual_person_query();
+//     //individual_station_query();
+//     //printf("Enter ")
+//     //traveller(1);
+//     //traveller(0);
+//     individual_person_query();
+//     printer(0);
+// }

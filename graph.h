@@ -4,8 +4,8 @@
 typedef struct graph Graph;
 typedef struct vertex Vertex;
 typedef struct edge Edge;
-#include "extra.c"
 
+#include "extra.h"
 //u can write variable struct names in caps or smalls based on your comfort
 
 //creates graph from vertices, n starts from 0 and iterates till maxn 

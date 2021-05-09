@@ -160,7 +160,7 @@ bool list_is_empty(List *list) {
 }
 
 //STACK
-// create a new stack and returns a pointer to it
+// create a new stack and reutrn a pointer to it
 List *new_stack() {
     return new_list();
 }

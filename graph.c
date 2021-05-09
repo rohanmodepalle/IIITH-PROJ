@@ -4,7 +4,10 @@
 #include <string.h>
 
 #include "graph.h"
-#include "personll.c"
+#include "personll.h"
+
+//#include "personll.c"
+//#include "personll.h"
 
 //GLOBAL VARIABLE ITERATORS TO REDUCE PARAMETERS IN FUNCTIONS
 int itr;
@@ -34,6 +37,14 @@ Vertex *new_vertex(const char *label, int id)
 }
 // create a new w-weighted edge from vertex id u to vertex id v
 //the weight is road_length here
+void graph_add_vertex(Graph* graph, const char* name) {
+	if (graph->n < graph->maxn) {
+		graph->vertices[graph->n] = new_vertex(name,graph->n);
+		graph->n++;
+	} else {
+		printf("adding new vertex to full graph\n");
+	}
+}
 Edge *new_edge(int u, int v, int w)
 {
     Edge *edge = malloc(sizeof(*edge));
@@ -54,7 +65,7 @@ int cmpfunc(const void *a, const void *b)
     {
         return path1->road_len - path2->road_len;
     }
-    else if (path1->safety_val < path2->safety_val)
+    else if (path1->safety_val > path2->safety_val)
     {
         return -1;
     }
@@ -201,7 +212,7 @@ void all_paths(Graph *graph, int source_id, int destination_id)
         printf("%f ", (paths + i)->safety_val);
         for (int j = 0; j < (paths + i)->size; j++)
         {
-            printf("%d ", (paths + i)->arr[j]);
+            printf("%d ", ((paths + i)->arr[j])+1);
         }
         printf("\n");
     }
@@ -393,7 +404,7 @@ float safety_value(int n, int arr[n])
     float danger_val = 0;
     for (int i = 0; i < n; i++)
     {
-        danger_val += (stations[arr[i]].positive) + (stations[arr[i]].primary / 5) + (stations[arr[i]].secondary / 10);
+        danger_val += (stations[arr[i]+1].positive) + (stations[arr[i]+1].primary / 5) + (stations[arr[i]+1].secondary / 10);
     } //we use the formula provided to calculate the danger value from stations structure since it contains required parameters
     //we generate afety values in range {0,1}
     if (danger_val == 0)
