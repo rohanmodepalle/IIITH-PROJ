@@ -247,6 +247,4 @@ we can just assume simulation for increasing days until "simulation exit is pres
 when u go to next day, some carry ons are-
 people who havent moved, stay in same station, hence the 'stable tansfer' function
 all covid positive people day of recover = date-1
-
-
 */
