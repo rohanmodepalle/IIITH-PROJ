@@ -49,7 +49,7 @@ int main()
         graph_add_u_edge(g, u - 1, v - 1, length);
     }
     printf("\n");
-    printf("Enter station number of each person:");
+    printf("Enter station number of each person: \n");
     inputppl(num_people);
     int Day = 1;
     char ch;

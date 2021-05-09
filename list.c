@@ -116,7 +116,7 @@ void reset_list(int Day)
 {
     for (int i = 1; i <= peoplecounter; i++)
     {
-        if (strcmp(people[i].string, s2) == 0 && strcmp(people[i].string, s3) == 0)
+        if (strcmp(people[i].string, s2) == 0 || strcmp(people[i].string, s3) == 0)
         {
             strcpy(people[i].string, s1);
         }
