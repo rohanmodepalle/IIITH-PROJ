@@ -50,7 +50,6 @@ typedef struct tempstats{
 #define N 100
 struct person people[N];
 struct tempstats stations[N];
-
 struct element *createelement(int x);
 void insertelement(struct element **head_ref, int new_data);
 void deleteelement(struct element** head_ref, int key);
