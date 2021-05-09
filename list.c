@@ -107,7 +107,7 @@ void stable_transfer(int Day)
     }
 }
 // This function is to reset the status of every primary and secondary 
-// contact to neutral after every day 
+// contact to neutral after every day as listed in assumptions
 void reset_list(int Day)
 {
     for (int i = 1; i <= peoplecounter; i++)
