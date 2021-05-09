@@ -91,7 +91,6 @@ void pehlaque(List *positive_list)
     }
 }
 
-
 void movement(int Day, int perid, int Destination)
 {
     people[perid].s_list[Day] = Destination;
