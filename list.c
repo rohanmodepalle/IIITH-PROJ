@@ -75,8 +75,8 @@ void pehlaque(List *positive_list)
         size_second--;
     }
 
-    List *primi = new_queue();
-    List *secoi = new_queue();
+    List *prim = new_queue();
+    List *seco = new_queue();
     for (int i = 1; i <= peoplecounter; i++)
     {
         if (strcmp(people[i].string, s2) == 0)
