@@ -33,9 +33,11 @@ typedef struct person {
     int s_list[60]; //station present per day
     char destination;
 }person;
+
 //=============================================================================
 //this is a structure for stroing the various information regarding the stations
 //=============================================================================
+
 typedef struct tempstats{
     int positive;
     int primary;
