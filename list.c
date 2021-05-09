@@ -90,8 +90,7 @@ void pehlaque(List *positive_list)
         }
     }
 }
-// s_list 1= [2 3 -1 -1 -1]
-// s_list 2= [3 3 4 4 -
+
 
 void movement(int Day, int perid, int Destination)
 {
