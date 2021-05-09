@@ -111,7 +111,7 @@ void stable_transfer(int Day)
         }
     }
 }
-
+//
 void reset_list(int Day)
 {
     for (int i = 1; i <= peoplecounter; i++)
