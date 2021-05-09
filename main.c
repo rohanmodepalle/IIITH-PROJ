@@ -236,7 +236,6 @@ input -> num_stations, num_roads, num_ people
 input -> station_names //this also adds vertices to the graph which is necessary
 input -> enter all the bidirectional paths and the road lengths
 input -> for all the number of people we had taken, accept their source stations
-
 day 0 -> source_station
 we can just assume simulation for increasing days until "simulation exit is pressed"
     our option window contains-
