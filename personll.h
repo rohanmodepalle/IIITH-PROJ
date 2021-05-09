@@ -8,10 +8,8 @@
 //=============================================================================
 //this is a structure for the elements in the linked lists
 //=============================================================================
-
 #ifndef PERSONLL__H__
 #define PERSONLL__H__
-
 
 struct element {
     int data;
