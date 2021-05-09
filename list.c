@@ -74,7 +74,6 @@ void pehlaque(List *positive_list)
         }
         size_second--;
     }
-
     List *primi = new_queue();
     List *secoi = new_queue();
     for (int i = 1; i <= peoplecounter; i++)
