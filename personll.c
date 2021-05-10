@@ -4,13 +4,15 @@
 #include <stdbool.h>
 #include <string.h>
 #include "personll.h"
-//#include "list.c"
 char s1[] = "Neutral";
 char s4[] = "Positive";
 char s2[] = "Primary";
 char s3[] = "Secondary";
 
-
+//=============================================================================
+//Author::N Harsha Vardhan
+//Dated:: 26th Apr 2021
+//Time:: 1:16 AM
 //=============================================================================
 //Linked Lists Utility function.
 //=============================================================================
@@ -144,17 +146,12 @@ void printperson(int x)
 //=============================================================================
 //individual query based function
 //=============================================================================
-void individual_person_query(int persons)
+void individual_person_query()
 {
     int x;
     printf("Enter The Person's Index You Want to Query\n");
     L5: ;
     scanf("%d", &x);
-    if(x>persons)
-    {
-        printf("Invalid person id, Please re-enter: \n");
-        goto L5;
-    }
     printf("Station=%d\nCondition=%s\n", people[x].source_station, people[x].string);
     if (people[x].date > 0)
     {
