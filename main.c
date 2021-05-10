@@ -2,22 +2,7 @@
 #include "graph.c"
 #include "list.c"
 #include "extra.c"
-//#include "personll.c"
-//7 9 7
-//a b c d e f g
-/* 
-1 2 10
-1 3 20
-3 7 60
-2 7 50
-7 4 20
-7 6 30
-6 5 80
-6 1 90
-3 5 100
-*/
-//for graphs the stations start from 0 to n-1
-//for people and station number in other ques it starts from 1 to n
+
 int main()
 {
     //first part of input.
