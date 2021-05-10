@@ -18,7 +18,6 @@ struct element *createelement(int x)
     temp = (struct element *)malloc(sizeof(struct element));
     temp->data = x;
     temp->next = NULL;
-
     return temp;
 }
 //=============================================================================
