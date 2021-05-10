@@ -78,6 +78,7 @@ Enter the required values asked corresponding to the function chosen.
 1. Primary and Secondary Contacts are reset after everyday.(If you are a primary contact on one day, the next day you become neutral)
 2. The Covid positive person after 15 days becomes neutral.
 3. Since there has been no limit on the number of days or regarding th people and stations, the maximum limit is hard coded to 100.(which can be changed).
+4. A person who had tested positive before will not be listed in the subsequent lists unless specifically mentioned as positive again. This is because he/she is already in isolation.
 
 ## Contributing
 This has been made solely by 3 people [Harshit Gupta](https://github.com/TheAthleticCoder "Harshit Gupta") ,[ N Harsha V](https://github.com/harsha20032020 "N Harsha Vardhan")  and [Rohan V M](https://github.com/rohanmodepalle "Rohan Modepalle") .
