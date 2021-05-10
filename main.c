@@ -90,7 +90,13 @@ int main()
             printf("Enter the IDs of the Covid Positive people:\n");
             for (int i = 0; i < num; i++)
             {
+                L1: ;
                 scanf("%d", &x);
+                if(x>peoplecounter)
+                {
+                    printf("Invalid index, please re-enter: \n");
+                    goto L1;
+                }
                 queue_enqueue(positive_list, x);
             }
             pehlaque(positive_list);
@@ -100,7 +106,13 @@ int main()
         {
             int src, dest;
             printf("Enter the stations u want to find the path for:");
+            L2: ;
             scanf("%d %d", &src, &dest);
+            if(src>num_stations || dest >num_stations)
+            {
+                printf("Invalid station number, please re-enter: \n");
+                goto L2;
+            }
             all_paths(g, src - 1, dest - 1);
             printf("\n");
         }
@@ -113,7 +125,13 @@ int main()
             for (int i = 0; i < changes; i++)
             {
                 int pid, dest;
+                L3: ;
                 scanf("%d %d", &pid, &dest);
+                if(pid>peoplecounter)
+                {
+                    printf("Invalid index, please re-enter: \n");
+                    goto L3;
+                }
                 people[pid].source_station = dest;
                 movement(Day, pid, dest);
             }
@@ -129,7 +147,13 @@ int main()
         {
             int x;
             printf("Enter Station to be queried\n");
+            L4: ;
             scanf("%d", &x);
+            if(x>num_stations)
+            {
+                printf("Invalid station number, please re-enter: \n");
+                goto L4;
+            }
             int ctr1 = 0, ctr2 = 0, ctr3 = 0;
             for (int i = 1; i <= num_people; i++)
             {
