@@ -132,7 +132,7 @@ int main()
                 }
                 if (dest > st)
                 {
-                    printf("Invalid pstation index, please re-enter both values: \n");
+                    printf("Invalid station number, please re-enter both values: \n");
                     goto L3;
                 }
                 people[pid].source_station = dest;
