@@ -1,11 +1,10 @@
 #include <stdio.h>
-#include<stdlib.h>
-#include<malloc.h>
-//#include "graph.h"
 #include "graph.c"
 #include "list.c"
 #include "extra.c"
+
 //#include "personll.c"
+
 //7 9 7
 //a b c d e f g
 /* 
@@ -23,23 +22,27 @@
 //for people and station number in other ques it starts from 1 to n
 int main()
 {
-    printf("Enter number of stations,roads and people\n");
+    //first part of input.
+    printf("Enter number of stations, roads and people\n");
     int num_stations, num_roads, num_people;
     int u = 0, v = 0, length = 0;
     char station_name[50];
     scanf("%d %d %d", &num_stations, &num_roads, &num_people);
-    peoplecounter = num_people; //for list.c
+    peoplecounter = num_people; //essential for list.c
+
+    //initializes graph
     Graph *g = new_graph(num_stations);
-    //enter station names
-    List *primi = new_queue();
-    List *secoi = new_queue();
+    //enter station names as u want it to be, just a fun segment :)
     printf("Enter names of the station:\n");
     for (int i = 0; i < num_stations; i++)
     {
         scanf("%s", station_name);
+        //insert vertex with these names into the graph
         graph_add_vertex(g, station_name);
     }
     printf("\n");
+
+    //third part of input which takes in the Bidirectional Paths and the Road Lengths
     printf("Enter the bidirectional paths:\n");
     //scanf for roads to be entered and stored.
     //format of i-1 for edge number
@@ -49,116 +52,49 @@ int main()
         graph_add_u_edge(g, u - 1, v - 1, length);
     }
     printf("\n");
-    printf("Enter station number of each person: \n");
+
+    //4th part os input which records the station each person is present in at Day 0.
+    printf("Enter station number of each person:\n");
     inputppl(num_people);
+
+    //Simulation starts from Day 1 onwards
     int Day = 1;
-    char ch;
-    while (1)
+    char ch = 'D';
+    printf("\n");
+    printf("\tThe SIMULATION WINDOW HAS STARTED!\n");
+    printf("Input 'A' to insert list of covid positive people and display primary and secondary contacts\n");
+    printf("Input 'B' to find suitable path from source to destintion, ideally pressed after 'A'\n");
+    printf("Input 'C' to record changes in the current station of each person at any day\n");
+    printf("Input 'D' to move ahead to the next day of the simulation\n");
+    printf("Input 'E' to perform individual station queries \n");
+    printf("Input 'F' to perform individual person queries\n");
+    printf("Input any other character to exit the entire simulation\n");
+    printf("\n");
+
+
+    while (ch=='A'||ch=='B'||ch=='C'||ch=='D'||ch=='E'||ch=='F')
     {
         printf("For Day: %d, Enter the Query number\n", Day);
         scanf("%s", &ch);
-        if (ch == 'Q')
-        {
-            exit(0);
-        }
         if (ch == 'A')
-        {
+        {   
+            //new list of covid positive people, hence the previous list of contacts are reset
+            reset_list(Day);
+            //standard input 
             List *positive_list = new_queue();
             int x;
             int num;
             queue_enqueue(positive_list, Day);
-            printf("Enter no of covid poitive people:\n");
+            printf("Enter number of COVID positive people:\n");
             scanf("%d", &num);
-            //printf("hi");
             printf("Enter the IDs of the Covid Positive people:\n");
             for (int i = 0; i < num; i++)
             {
                 scanf("%d", &x);
                 queue_enqueue(positive_list, x);
-                //printf("%d \n", x);
             }
-            //printf("%d \n", queue_size(positive_list));
-            int d, dcomp; //d->day in which list is given
-            d = queue_dequeue(positive_list);
-            //printf("%d \n", d);
-            int size = queue_size(positive_list);
-            //printf("%d \n", size);
-            //queue of all positive list
-            if (d > 15)
-            {
-                dcomp = d - 15;
-            }
-            else
-            {
-                dcomp = 0;
-            }
-            int p_id; //positive id
-            while (size > 0)
-            { //on day d
-                p_id = queue_dequeue(positive_list);
-                //printf("%d \n", p_id);
-                strcpy(people[p_id].string, s4); //s4 = positive
-                stations[people[p_id].s_list[d - 1]].positive++;
-                people[p_id].date = 14;
-                for (int i = 1; i <= peoplecounter; i++)
-                { //people counter = all people in simulation
-                    for (int j = dcomp; j < d; j++)
-                    {
-                        //s_list for each day =
-                        if (people[i].s_list[j] == people[p_id].s_list[j] && strcmp(people[i].string, s4) != 0)
-                        {
-                            strcpy(people[i].string, s2); //s2 = primary
-                            stations[people[i].s_list[d - 1]].primary++;
-                            //printf("%d \n", i);
-                            people[i].infect_day = j; //primary on d-x  || d-x to d-1|| d-15 x= 1 to 15
-                        }
-                    }
-                }
-                size--;
-            }
-            //Day D ss D-1
-            //d -> d-15 that person got covid
-            //1<x<15 d-15,primary contacts (d-15 to d-1)- secondary primary contacts
-            List *primary = new_queue();
-            for (int i = 1; i <= peoplecounter; i++)
-            {
-                if (strcmp(people[i].string, s2) == 0)
-                { //s2 = primary
-                    queue_enqueue(primary, i);
-                }
-            }
-            int size_second = queue_size(primary);
-            int prim_id;
-            while (size_second > 0)
-            {
-                prim_id = queue_dequeue(primary);
-                for (int i = 1; i <= peoplecounter; i++)
-                {
-                    for (int j = people[prim_id].infect_day; j < d; j++)
-                    {
-                        if (people[i].s_list[j] == people[prim_id].s_list[j] && strcmp(people[i].string, s4) != 0 && strcmp(people[i].string, s2) != 0)
-                        {
-                            strcpy(people[i].string, s3); //s3 = secondary
-                            stations[people[i].s_list[d - 1]].secondary++;
-                        }
-                    }
-                }
-                size_second--;
-            }
-
-            for (int i = 1; i <= peoplecounter; i++)
-            {
-                if (strcmp(people[i].string, s2) == 0)
-                {
-                    queue_enqueue(primi, i);
-                    printf("p %d \n", i);
-                }
-                if (strcmp(people[i].string, s3) == 0)
-                {
-                    queue_enqueue(secoi, i);
-                    printf("s %d\n", i);
-                }
-            }
+            pehlaque(positive_list);
+            printf("\n");
         }
         if (ch == 'B')
         {
@@ -166,6 +102,7 @@ int main()
             printf("Enter the stations u want to find the path for:");
             scanf("%d %d", &src, &dest);
             all_paths(g, src - 1, dest - 1);
+            printf("\n");
         }
         if (ch == 'C')
         {
@@ -180,12 +117,13 @@ int main()
                 people[pid].source_station = dest;
                 movement(Day, pid, dest);
             }
+            printf("\n");
         }
         if (ch == 'D')
         {
             stable_transfer(Day);
-            reset_list(Day);
             Day++;
+            printf("\n");
         }
         if (ch == 'E')
         {
@@ -222,10 +160,12 @@ int main()
             stations[x].secondary = ctr2;
             stations[x].primary = ctr3;
             individual_station_query(x);
+            printf("\n");
         }
         if (ch == 'F')
         {
             individual_person_query();
+            printf("\n");
         }
     }
 }
@@ -236,6 +176,7 @@ input -> num_stations, num_roads, num_ people
 input -> station_names //this also adds vertices to the graph which is necessary
 input -> enter all the bidirectional paths and the road lengths
 input -> for all the number of people we had taken, accept their source stations
+
 day 0 -> source_station
 we can just assume simulation for increasing days until "simulation exit is pressed"
     our option window contains-
@@ -246,4 +187,6 @@ we can just assume simulation for increasing days until "simulation exit is pres
 when u go to next day, some carry ons are-
 people who havent moved, stay in same station, hence the 'stable tansfer' function
 all covid positive people day of recover = date-1
+
+
 */

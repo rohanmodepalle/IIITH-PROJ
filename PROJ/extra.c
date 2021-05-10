@@ -9,7 +9,7 @@ struct node {
     int data;
     Node *next;
 };
-//points to its first and last nodes, and stores its size (num. nodes)
+//points to its first and last nodes, and stores its size (number of nodes)
 struct list {
     int size;
     Node *head;

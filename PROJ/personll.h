@@ -8,8 +8,10 @@
 //=============================================================================
 //this is a structure for the elements in the linked lists
 //=============================================================================
+
 #ifndef PERSONLL__H__
 #define PERSONLL__H__
+
 
 struct element {
     int data;
@@ -31,11 +33,9 @@ typedef struct person {
     int s_list[60]; //station present per day
     char destination;
 }person;
-
 //=============================================================================
 //this is a structure for stroing the various information regarding the stations
 //=============================================================================
-
 typedef struct tempstats{
     int positive;
     int primary;
@@ -48,6 +48,7 @@ typedef struct tempstats{
 #define N 100
 struct person people[N];
 struct tempstats stations[N];
+
 struct element *createelement(int x);
 void insertelement(struct element **head_ref, int new_data);
 void deleteelement(struct element** head_ref, int key);
