@@ -28,8 +28,9 @@ int main()
     int u = 0, v = 0, length = 0;
     char station_name[50];
     scanf("%d %d %d", &num_stations, &num_roads, &num_people);
+    int st = num_stations;
+    int pp = num_people;
     peoplecounter = num_people; //essential for list.c
-
     //initializes graph
     Graph *g = new_graph(num_stations);
     //enter station names as u want it to be, just a fun segment :)
@@ -71,16 +72,15 @@ int main()
     printf("Input any other character to exit the entire simulation\n");
     printf("\n");
 
-
-    while (ch=='A'||ch=='B'||ch=='C'||ch=='D'||ch=='E'||ch=='F')
+    while (ch == 'A' || ch == 'B' || ch == 'C' || ch == 'D' || ch == 'E' || ch == 'F')
     {
         printf("For Day: %d, Enter the Query number\n", Day);
         scanf("%s", &ch);
         if (ch == 'A')
-        {   
+        {
             //new list of covid positive people, hence the previous list of contacts are reset
             reset_list(Day);
-            //standard input 
+            //standard input
             List *positive_list = new_queue();
             int x;
             int num;
@@ -90,9 +90,9 @@ int main()
             printf("Enter the IDs of the Covid Positive people:\n");
             for (int i = 0; i < num; i++)
             {
-                L1: ;
+            L1:;
                 scanf("%d", &x);
-                if(x>peoplecounter)
+                if (x > pp)
                 {
                     printf("Invalid index, please re-enter: \n");
                     goto L1;
@@ -105,10 +105,10 @@ int main()
         if (ch == 'B')
         {
             int src, dest;
-            printf("Enter the stations u want to find the path for:");
-            L2: ;
+            printf("Enter the stations u want to find the path for: \n");
+        L2:;
             scanf("%d %d", &src, &dest);
-            if(src>num_stations || dest >num_stations)
+            if ((src > st) || (dest > st))
             {
                 printf("Invalid station number, please re-enter: \n");
                 goto L2;
@@ -121,15 +121,20 @@ int main()
             int changes;
             printf("Enter number of movement changes:\n");
             scanf("%d", &changes);
-            printf("Enter Person ID and new destination he reaches on this day:\n");
             for (int i = 0; i < changes; i++)
             {
+                printf("Enter Person ID and new destination he reaches on this day:\n");
                 int pid, dest;
-                L3: ;
+            L3:;
                 scanf("%d %d", &pid, &dest);
-                if(pid>peoplecounter)
+                if (pid > pp)
                 {
-                    printf("Invalid index, please re-enter: \n");
+                    printf("Invalid person index, please re-enter both values: \n");
+                    goto L3;
+                }
+                if (dest > st)
+                {
+                    printf("Invalid pstation index, please re-enter both values: \n");
                     goto L3;
                 }
                 people[pid].source_station = dest;
@@ -147,9 +152,9 @@ int main()
         {
             int x;
             printf("Enter Station to be queried\n");
-            L4: ;
+        L4:;
             scanf("%d", &x);
-            if(x>num_stations)
+            if (x > st)
             {
                 printf("Invalid station number, please re-enter: \n");
                 goto L4;
@@ -188,7 +193,7 @@ int main()
         }
         if (ch == 'F')
         {
-            individual_person_query();
+            individual_person_query(peoplecounter);
             printf("\n");
         }
     }

@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "personll.h"
-
+//#include "list.c"
 char s1[] = "Neutral";
 char s4[] = "Positive";
 char s2[] = "Primary";
@@ -144,13 +144,13 @@ void printperson(int x)
 //=============================================================================
 //individual query based function
 //=============================================================================
-void individual_person_query()
+void individual_person_query(int persons)
 {
     int x;
     printf("Enter The Person's Index You Want to Query\n");
     L5: ;
     scanf("%d", &x);
-    if(x>peoplecounter)
+    if(x>persons)
     {
         printf("Invalid person id, Please re-enter: \n");
         goto L5;
