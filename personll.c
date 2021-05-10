@@ -148,7 +148,13 @@ void individual_person_query()
 {
     int x;
     printf("Enter The Person's Index You Want to Query\n");
+    L5: ;
     scanf("%d", &x);
+    if(x>peoplecounter)
+    {
+        printf("Invalid person id, Please re-enter: \n");
+        goto L5;
+    }
     printf("Station=%d\nCondition=%s\n", people[x].source_station, people[x].string);
     if (people[x].date > 0)
     {
