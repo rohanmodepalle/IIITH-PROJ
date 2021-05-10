@@ -164,7 +164,7 @@ void individual_person_query(int persons)
     {
         printf("Date=0\n");
     }
-    printf("\n\n\n");
+    printf("\n");
 }
 //=============================================================================
 //prints the situation of all the stations till the given input
